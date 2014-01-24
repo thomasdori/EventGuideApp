@@ -15,7 +15,6 @@ IndexViewModifier.prototype.startListening = function(){
     $(document)
         .bind(Constants.events.requestInitiated, this.showLoadingAnimation.bind(this))
         .bind(Constants.events.requestDone, this.hideLoadingAnimation.bind(this))
-        .bind(Constants.events.requestFailed, this.showConnectionError.bind(this))
         .bind(Constants.events.updatedMenu, this.updateMenu.bind(this))
         .bind(Constants.events.updatedContent, this.updateContent.bind(this))
         .bind(Constants.events.updatedMessage, this.updateMessage.bind(this))
@@ -68,45 +67,36 @@ IndexViewModifier.prototype.updateMenu = function(){
 
     if (templateContent){
         this.loadAndApplyTemplate('menu', templateContent, '.nav-search');
-        //todo: click first item in menu
     }
 };
 
 /**
  *
- * @param data
  */
 IndexViewModifier.prototype.updateContent = function(){
-    var data = this.viewModel.getContent(this.viewModel.lastViewUrl),
-        templateFileName,
-        templateContent;
-
-    if(templateContent){
-        if (data.posts) {
-            templateFileName = 'posts';
-            templateContent = data;
-        } else if (data.page) {
-            templateFileName = 'page';
-            templateContent = data.page;
-        } else if (data.templateFile && data.templateContent) {
-            templateFileName = data.templateFile;
-            templateContent = data.templateContent;
-        } else {
-            return;
-        }
-
-        // load the template file via AJAX
-        this.loadAndApplyTemplate(templateFileName, templateContent, '#appContent');
-    }
-    // close the menu so the main content is visible
-    $('#nav-panel').panel('close');
-};
-
-/**
- * This method opens a pop-up that shows a message about a connection error.
- */
-IndexViewModifier.prototype.showConnectionError = function () {
-    this.viewModel.setMessage('Es ist ein Fehler in der Kommunikation mit dem Server aufgetreten.');
+//    var data = this.viewModel.getContent(this.viewModel.lastViewUrl),
+//        templateFileName,
+//        templateContent;
+//
+//    if(templateContent){
+//        if (data.posts) {
+//            templateFileName = 'posts';
+//            templateContent = data;
+//        } else if (data.page) {
+//            templateFileName = 'page';
+//            templateContent = data.page;
+//        } else if (data.templateFile && data.templateContent) {
+//            templateFileName = data.templateFile;
+//            templateContent = data.templateContent;
+//        } else {
+//            return;
+//        }
+//
+//        // load the template file via AJAX
+//        this.loadAndApplyTemplate(templateFileName, templateContent, '#appContent');
+//    }
+//    // close the menu so the main content is visible
+//    $('#nav-panel').panel('close');
 };
 
 /**
@@ -143,17 +133,6 @@ IndexViewModifier.prototype.hideLoadingAnimation = function () {
 };
 
 /**
- * Switches between menu and back icon.
- * @param oldIconName
- * @param newIconName
- */
-IndexViewModifier.prototype.switchMenuIcons = function (oldIconName, newIconName) {
-    $('#iconbutton').attr('data-icon', oldIconName).find('.ui-icon')
-        .removeClass(oldIconName)
-        .addClass(newIconName);
-};
-
-/**
  * This method loads the template file via AJAX.
  * @param templateName
  * @param templateContent
@@ -168,7 +147,6 @@ IndexViewModifier.prototype.loadAndApplyTemplate = function(templateName, templa
             $('[data-role="listview"]').listview();
             $('#session-list').listview().listview('refresh');
             $('.nav-search').listview('refresh');
-            $('#news').trigger('click');
     });
 };
 
@@ -180,3 +158,14 @@ IndexViewModifier.prototype.loadAndApplyTemplate = function(templateName, templa
 IndexViewModifier.prototype.getTemplatePath = function(templateFileName){
     return 'templates/' + templateFileName + '.html';
 };
+
+///**
+// * Switches between menu and back icon.
+// * @param oldIconName
+// * @param newIconName
+// */
+//IndexViewModifier.prototype.switchMenuIcons = function (oldIconName, newIconName) {
+//    $('#iconbutton').attr('data-icon', oldIconName).find('.ui-icon')
+//        .removeClass(oldIconName)
+//        .addClass(newIconName);
+//};

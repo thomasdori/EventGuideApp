@@ -2,7 +2,9 @@
  * This class provides all methods to request data from the server
  * @constructor
  */
-function ServerApi() {}
+function ServerApi() {
+    this.callBackHandler = new CallBackHandler();
+}
 
 /**
  * This is the only method that does an jquery ajax request.
@@ -13,100 +15,40 @@ function ServerApi() {}
 ServerApi.prototype.getJSON = function (method, data, callback) {
     var url = Constants.serverUrl + 'EventGuideService/api/' + method;
 
-    jQuery.event.trigger(Constants.events.requestInitiated);
-
+    $.event.trigger(Constants.events.requestInitiated);
     $.support.cors = true;
 
     $.getJSON(url, data, callback)
-        .fail(function () {jQuery.event.trigger(Constants.events.requestFailed)})
-        .always(function () {jQuery.event.trigger(Constants.events.requestDone)});
+        .fail(this.callBackHandler.requestFailed.bind(this.callBackHandler))
+        .always(this.callBackHandler.requestDone.bind(this.callBackHandler));
 };
 
 /**
-* This method is used to get default content provided by the backend.
-* @param site
-* @param callback
-*/
-ServerApi.prototype.getContent = function (site, callback) {
-    this.getJSON(Constants.serverUrl + site, {}, callback);
+ * This method is used to get default content provided by the backend.
+ * @param site
+ */
+ServerApi.prototype.getContent = function (site) {
+    this.getJSON(Constants.serverUrl + site, {}, this.callBackHandler.contentCallback.bind(this.callBackHandler));
+};
+
+/**
+ * This method request the menu.
+ */
+ServerApi.prototype.getMenu = function () {
+    this.getJSON('menus/get_menu', {}, this.callBackHandler.menuCallback.bind(this.callBackHandler));
 };
 
 /**
  * This method prepares and sends a login request to the server.
  * @param email
- * @param callback
  */
-ServerApi.prototype.login = function (email, callback) {
-    this.getJSON('authentication/login', {
-        'email': email
-    }, callback);
+ServerApi.prototype.login = function (email) {
+    this.getJSON('authentication/login', {'email': email}, this.callBackHandler.loginCallback.bind(this.callBackHandler));
 };
 
 /**
  * This method prepares and sends a logout request to the server.
- * @param callback
  */
-ServerApi.prototype.logout = function (callback) {
-    this.getJSON('authentication/logout', {}, callback);
-};
-
-/**
- * This method submits a comment made by the user.
- * @param commentContent
- * @param postId
- * @param user
- * @param callback
- */
-ServerApi.prototype.submitComment = function (commentContent, postId, user, callback) {
-    this.getJSON('respond/submit_comment', {
-        'post_id': postId,
-        'name': user,
-        'email': user,
-        'content': commentContent
-    }, callback);
-};
-
-/**
- * This method submits a poll vote made by the user.
- * @param pollqId
- * @param pollaId
- * @param pollAnswerNew
- * @param callback
- */
-ServerApi.prototype.submitPollVote = function (pollqId, pollaId, pollAnswerNew, callback) {
-    this.getJSON('polls/vote_poll', {
-        'pollq_id': pollqId,
-        'polla_id': pollaId,
-        'pollAnswerNew': pollAnswerNew
-    }, callback);
-};
-
-/**
- * This method requests a specific poll.
- * @param pollId
- * @param callback
- */
-ServerApi.prototype.getPollById = function (pollId, callback) {
-    this.getJSON('polls/get_poll_for_session', {
-        'pollid': pollId
-    }, callback);
-};
-
-/**
- * This method requests a specific speaker.
- * @param speakerId
- * @param callback
- */
-ServerApi.prototype.getSpeakerById = function (speakerId, callback) {
-    this.getJSON('users/get_speakers', {
-        'speakerid': speakerId
-    }, callback);
-};
-
-/**
- * This method request the menu.
- * @param callback
- */
-ServerApi.prototype.getMenu = function (callback) {
-    this.getJSON('menus/get_menu', {}, callback);
+ServerApi.prototype.logout = function () {
+    this.getJSON('authentication/logout', {}, this.callBackHandler.logoutCallback.bind(this.callBackHandler));
 };

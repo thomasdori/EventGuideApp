@@ -2,21 +2,23 @@
  * This class contains all the variable information of the view.
  * @constructor
  */
-function ViewModel(){
+function ViewModel() {
     this.messageKey = 'message';
-    this.mainContentKey = 'mainContent';
     this.menuKey = 'menu';
     this.serverApi = new ServerApi();
     this.storageApi = new StorageApi();
-}
 
-ViewModel.prototype.lastViewUrl = '';
+    $(document)
+        .bind(Constants.events.receivedMessage, this.setMessage.bind(this))
+        .bind(Constants.events.receivedContentData, this.setContent.bind(this))
+        .bind(Constants.events.receivedMenuData, this.setMenu.bind(this));
+}
 
 /**
  * This method persists the menu content as JSON.
  * @param data
  */
-ViewModel.prototype.setMenu = function(data) {
+ViewModel.prototype.setMenu = function (event, data) {
     this.storageApi.set(this.menuKey, data);
     jQuery.event.trigger(Constants.events.updatedMenu, [data]);
 };
@@ -25,11 +27,11 @@ ViewModel.prototype.setMenu = function(data) {
  * This method returns the menu.
  * @returns {*}
  */
-ViewModel.prototype.getMenu = function(){
+ViewModel.prototype.getMenu = function () {
     var returnValue = this.storageApi.get(this.menuKey);
 
-    if(!returnValue || returnValue === null)
-        this.serverApi.getMenu(this.menuCallback.bind(this));
+    if (!returnValue || returnValue === null)
+        this.serverApi.getMenu();
 
     return returnValue;
 };
@@ -37,9 +39,10 @@ ViewModel.prototype.getMenu = function(){
 /**
  * This method sets the main content.
  * @param data
+ * @param key
  */
-ViewModel.prototype.setContent = function(data) {
-    this.storageApi.set(this.mainContentKey, data);
+ViewModel.prototype.setContent = function (event, data) {
+    this.storageApi.set(data.pageId, data.content);
     jQuery.event.trigger(Constants.events.updatedContent);
 };
 
@@ -48,11 +51,11 @@ ViewModel.prototype.setContent = function(data) {
  * @param url
  * @returns {*}
  */
-ViewModel.prototype.getContent = function(url){
+ViewModel.prototype.getContent = function (url) {
     var returnValue = this.storageApi.get(url);
 
-    if(!returnValue || returnValue === null)
-        this.serverApi.getContent(url, this.contentCallback.bind(this));
+    if (!returnValue || returnValue === null)
+        this.serverApi.getContent(url);
 
     return returnValue;
 };
@@ -61,7 +64,7 @@ ViewModel.prototype.getContent = function(url){
  * This method sets the message value.
  * @param message
  */
-ViewModel.prototype.setMessage = function(message){
+ViewModel.prototype.setMessage = function (event, message) {
     this.storageApi.set(this.messageKey, message);
     jQuery.event.trigger(Constants.events.updatedMessage);
 };
@@ -70,30 +73,14 @@ ViewModel.prototype.setMessage = function(message){
  * This method returns the message value.
  * @returns {*}
  */
-ViewModel.prototype.getMessage = function(){
+ViewModel.prototype.getMessage = function () {
     return this.storageApi.get(this.messageKey);
 };
 
 /**
  * This method removes the message from the storage.
  */
-ViewModel.prototype.removeMessage = function() {
+ViewModel.prototype.removeMessage = function () {
     this.storageApi.remove(this.messageKey);
     jQuery.event.trigger(Constants.events.updatedMessage);
-}
-
-/**
- * Handles menu callback.
- * @param data - The data returned form the server.
- */
-ViewModel.prototype.menuCallback = function (data) {
-    this.setMenu(data)
-};
-
-/**
- * Handles site callback.
- * @param data - The data returned form the server.
- */
-ViewModel.prototype.contentCallback = function (data) {
-    this.setContent(data)
 };

@@ -7,9 +7,12 @@ function UserModel() {
     this.userKey = 'user';
     this.storageApi = new StorageApi();
     this.serverApi = new ServerApi();
-    this.viewModel = new ViewModel();
 
-    jQuery.event.trigger(this.isLoggedIn() ? Constants.events.userLoggedIn : Constants.events.userLoggedOut);
+    $.event.trigger(this.isLoggedIn() ? Constants.events.userLoggedIn : Constants.events.userLoggedOut);
+
+    $(document)
+        .bind(Constants.events.receivedLogoutData, this.removeUser.bind(this))
+        .bind(Constants.events.receivedLoginData, this.setUser.bind(this));
 }
 
 /**
@@ -34,7 +37,7 @@ UserModel.prototype.getLoggedInUser = function () {
  */
 UserModel.prototype.login = function (email) {
     if(!this.isLoggedIn()){
-        this.serverApi.login(email, this.loginCallback.bind(this));
+        this.serverApi.login(email);
     }
 };
 
@@ -43,7 +46,7 @@ UserModel.prototype.login = function (email) {
  */
 UserModel.prototype.logout = function () {
     if(this.isLoggedIn()){
-        this.serverApi.logout(this.logoutCallback.bind(this));
+        this.serverApi.logout();
     }
 };
 
@@ -51,7 +54,7 @@ UserModel.prototype.logout = function () {
  * This method sets the user variable in the storage
  * @param user
  */
-UserModel.prototype.setUser = function(user){
+UserModel.prototype.setUser = function(event, user){
     jQuery.event.trigger(Constants.events.userLoggedIn);
     this.storageApi.set(this.userIsLoggedInKey, 'true');
     this.storageApi.set(this.userKey, user);
@@ -63,28 +66,4 @@ UserModel.prototype.setUser = function(user){
 UserModel.prototype.removeUser = function(){
     jQuery.event.trigger(Constants.events.userLoggedOut);
     this.storageApi.clear();
-};
-
-/**
-* Handles login callback.
-* @param data - The data returned form the server.
-*/
-UserModel.prototype.loginCallback = function (data) {
-    if (data.status && data.status === 'ok' && data.user) {
-        this.setUser(data.user);
-    } else {
-        this.viewModel.setMessage('Diese E-Mail Adresse wurde noch nicht registriert.');
-    }
-};
-
-/**
-* Handles logout callback.
-* @param data - The data returned form the server.
-*/
-UserModel.prototype.logoutCallback = function (data) {
-    if (data.status && data.status === 'ok') {
-        this.removeUser();
-    } else {
-        this.viewModel.setMessage('Beim Logout trat ein Fehler auf.');
-    }
 };

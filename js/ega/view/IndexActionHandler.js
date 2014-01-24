@@ -21,8 +21,8 @@ IndexActionHandler.prototype.viewDidLoad = function () {
 //        .on('submit', '#frmComment', this.commentSubmitHandler.bind(this))
 //        .on('click', '#btnSubmitPoll', this.pollSubmitHandler.bind(this))
         .on('click', '#message-close-button', this.closePopupHandler.bind(this))
-        .on('click', 'a.menu-item:not(#logout)', this.menuItemClickHandler.bind(this))
         .on('submit', '#frmLogin', this.loginHandler.bind(this))
+        .on('click', 'a.menu-item:not(#logout)', this.menuItemClickHandler.bind(this))
         .on('click', 'a.menu-item#logout', this.logoutHandler.bind(this));
 
     // Apache Cordova initialization
@@ -74,6 +74,7 @@ IndexActionHandler.prototype.menuItemClickHandler = function (event) {
     var menuItem = $(event.target);
 
     $('#pageTitle').html(menuItem.attr('title'));
+
     this.viewModel.getContent(menuItem.attr('href'));
 
     // prevent default behaviour of html anchor

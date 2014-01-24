@@ -10,6 +10,8 @@ function ViewModel(){
     this.storageApi = new StorageApi();
 }
 
+ViewModel.prototype.lastViewUrl = '';
+
 /**
  * This method persists the menu content as JSON.
  * @param data
@@ -26,7 +28,7 @@ ViewModel.prototype.setMenu = function(data) {
 ViewModel.prototype.getMenu = function(){
     var returnValue = this.storageApi.get(this.menuKey);
 
-    if(!returnValue)
+    if(!returnValue || returnValue === null)
         this.serverApi.getMenu(this.menuCallback.bind(this));
 
     return returnValue;
@@ -36,20 +38,21 @@ ViewModel.prototype.getMenu = function(){
  * This method sets the main content.
  * @param data
  */
-ViewModel.prototype.setMainContent = function(data) {
+ViewModel.prototype.setContent = function(data) {
     this.storageApi.set(this.mainContentKey, data);
-    jQuery.event.trigger(Constants.events.updatedMainContent);
+    jQuery.event.trigger(Constants.events.updatedContent);
 };
 
 /**
  * This method returns the main content.
+ * @param url
  * @returns {*}
  */
-ViewModel.prototype.getMainContent = function(){
-    var returnValue = this.storageApi.get(this.mainContentKey);
+ViewModel.prototype.getContent = function(url){
+    var returnValue = this.storageApi.get(url);
 
-//    if(!this.mainContent)
-//        this.serverApi.getMenu(this.callbackHandler.gotMenu.bind(this.callbackHandler));
+    if(!returnValue || returnValue === null)
+        this.serverApi.getContent(url, this.contentCallback.bind(this));
 
     return returnValue;
 };
@@ -85,4 +88,12 @@ ViewModel.prototype.removeMessage = function() {
  */
 ViewModel.prototype.menuCallback = function (data) {
     this.setMenu(data)
+};
+
+/**
+ * Handles site callback.
+ * @param data - The data returned form the server.
+ */
+ViewModel.prototype.contentCallback = function (data) {
+    this.setContent(data)
 };

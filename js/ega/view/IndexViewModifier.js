@@ -5,20 +5,19 @@
 function IndexViewModifier() {
     this.barsIconClass = 'ui-icon-bars';
     this.arrowIconClass = 'ui-icon-arrow-l';
-    this.bindActionHandler();
     this.viewModel = new ViewModel();
 }
 
 /**
  * This method binds the functions to the custom events
  */
-IndexViewModifier.prototype.bindActionHandler = function(){
+IndexViewModifier.prototype.startListening = function(){
     $(document)
         .bind(Constants.events.requestInitiated, this.showLoadingAnimation.bind(this))
         .bind(Constants.events.requestDone, this.hideLoadingAnimation.bind(this))
         .bind(Constants.events.requestFailed, this.showConnectionError.bind(this))
         .bind(Constants.events.updatedMenu, this.updateMenu.bind(this))
-        .bind(Constants.events.updatedMainContent, this.updateMainContent.bind(this))
+        .bind(Constants.events.updatedContent, this.updateContent.bind(this))
         .bind(Constants.events.updatedMessage, this.updateMessage.bind(this))
         .bind(Constants.events.userLoggedOut, this.showLoginView.bind(this))
         .bind(Constants.events.userLoggedIn, this.showAppView.bind(this));
@@ -43,7 +42,6 @@ IndexViewModifier.prototype.showBackIcon = function () {
  */
 IndexViewModifier.prototype.showAppView = function () {
     this.updateMenu();
-    this.updateMainContent();
 
     $('#iconbutton').show();
     $('#frmLogin').hide();
@@ -70,6 +68,7 @@ IndexViewModifier.prototype.updateMenu = function(){
 
     if (templateContent){
         this.loadAndApplyTemplate('menu', templateContent, '.nav-search');
+        //todo: click first item in menu
     }
 };
 
@@ -77,30 +76,28 @@ IndexViewModifier.prototype.updateMenu = function(){
  *
  * @param data
  */
-IndexViewModifier.prototype.updateMainContent = function(){
-    var mainContent = this.viewModel.getMainContent();
+IndexViewModifier.prototype.updateContent = function(){
+    var data = this.viewModel.getContent(this.viewModel.lastViewUrl),
+        templateFileName,
+        templateContent;
 
-    if(mainContent){}
-//
-//    var templateFileName,
-//        templateContent;
-//
-//    if (data.posts) {
-//        templateFileName = 'posts';
-//        templateContent = data;
-//    } else if (data.page) {
-//        templateFileName = 'page';
-//        templateContent = data.page;
-//    } else if (data.templateFile && data.templateContent) {
-//        templateFileName = data.templateFile;
-//        templateContent = data.templateContent;
-//    } else {
-//        return;
-//    }
-//
-//    // load the template file via AJAX
-//    this.loadAndApplyTemplate(templateFileName, templateContent, '#appContent');
+    if(templateContent){
+        if (data.posts) {
+            templateFileName = 'posts';
+            templateContent = data;
+        } else if (data.page) {
+            templateFileName = 'page';
+            templateContent = data.page;
+        } else if (data.templateFile && data.templateContent) {
+            templateFileName = data.templateFile;
+            templateContent = data.templateContent;
+        } else {
+            return;
+        }
 
+        // load the template file via AJAX
+        this.loadAndApplyTemplate(templateFileName, templateContent, '#appContent');
+    }
     // close the menu so the main content is visible
     $('#nav-panel').panel('close');
 };

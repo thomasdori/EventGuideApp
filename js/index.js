@@ -1,6 +1,7 @@
 $(function () {
-    'use strict';
+    var indexViewModifier = new IndexViewModifier();
+    indexViewModifier.startListening();
 
-    // VARIABLE INITIALIZATION
-    (new IndexActionHandler).viewDidLoad();
+    var indexActionHandler = new IndexActionHandler();
+    indexActionHandler.viewDidLoad();
 });

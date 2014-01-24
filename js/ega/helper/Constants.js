@@ -5,7 +5,7 @@ var Constants = {
         requestDone: 'requestDone',
         requestFailed: 'requestFailed',
         updatedMenu: 'updatedMenu',
-        updatedMainContent: 'updatedMainContent',
+        updatedContent: 'updatedContent',
         updatedMessage: 'updatedMessage',
         userLoggedOut: 'userLoggedOut',
         userLoggedIn: 'userLoggedIn'

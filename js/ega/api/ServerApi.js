@@ -27,8 +27,8 @@ ServerApi.prototype.getJSON = function (method, data, callback) {
 * @param site
 * @param callback
 */
-ServerApi.prototype.getSite = function (site, callback) {
-    this.getJSON(Constants.serverUrl + site + '&json=1', {}, callback);
+ServerApi.prototype.getContent = function (site, callback) {
+    this.getJSON(Constants.serverUrl + site, {}, callback);
 };
 
 /**

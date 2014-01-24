@@ -1,0 +1,23 @@
+<ul id='session-list' data-role='listview' data-inset='false' >
+    ${( $data.counter = 0 ),''}
+    ${( $data.counterForSessionItem = 0 ),''}
+    {{each(i, sessionCategory) sessions}}
+    <li class="cat-header${counter}" data-role="list-divider"><h1>${sessionCategory[0].category}</h1></li>
+        {{each(i, session) sessionCategory}}
+    {{if session.isPause != 1 }}
+            <li data-role='collapsible' data-collapsed-icon='arrow-r' data-expanded-icon='arrow-d' data-category='${session.category}' id='${counterForSessionItem}' class="session-${counter} session"
+                data-session-content="${session.id}|${session.start}|${session.title}|${session.content}|${session.poll}|${session.comment}" data-session-speaker="  {{each(i, speaker) speaker}} ${speaker.username},${speaker.id}|{{/each}}" >
+                  <span class="session-start">${session.start}</span><span class='session-title'>${session.title}</span>
+            </li>
+    {{else}}
+    <!-- is Pause Section-->
+    <li data-role='collapsible' data-collapsed-icon='arrow-r' data-expanded-icon='arrow-d' data-category='${session.category}' id='${counterForSessionItem}' class="pause session-${counter} session" >
+        <span class="session-start pause">${session.start}</span><span class='session-title pause'>${session.title}</span>
+    </li>
+    <!-- End is Pause-->
+    {{/if}}
+        ${( $data.counterForSessionItem = $data.counterForSessionItem + 1),''}
+        {{/each}}                                                                                                               
+    ${( $data.counter = $data.counter + 1),''}
+    {{/each}}
+</ul>

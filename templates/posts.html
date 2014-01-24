@@ -1,0 +1,8 @@
+<ul id='post-list' data-role='listview' data-inset='false'>
+    {{each(i, post) posts}}
+    <li data-role='collapsible' data-collapsed-icon='arrow-r' data-expanded-icon='arrow-d' class='post'>
+        <h2 class='post-title'>${post.title}</h2>
+        <p class='post-content'>{{html post.content}}</p>
+    </li>
+    {{/each}}
+</ul>

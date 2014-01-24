@@ -1,0 +1,7 @@
+<ul id='attendee-list' data-role='listview' data-inset='false'>
+    {{each(i, attendee) attendees}}
+    <li class='attendee' data-attendee-content="${attendee.name}|${attendee.imgUrl}|${attendee.bio}">
+        <span class='attendee-name'>${attendee.name}</span>  -  <span class="attendee-company">${attendee.company}</span>
+    </li>
+    {{/each}}
+</ul>

@@ -1,0 +1,39 @@
+<div id="subPageContent">
+    <div id="content_container" class="ui-content" data-role="content" role="main">
+        <div class="jqm-content ui-content" data-role="content" role="main">
+            {{if polls.length}}
+            	<div class="polls-list limited-width">
+                {{each(i, poll) polls}}
+					<div class="poll-container">
+                        <h3 class='poll-title'>${poll.pollq_question}</h3>
+                        <ul class="poll-choices-list">
+							{{each(i, pollanswer) poll.pollAnswers}}
+                                {{if pollanswer.polla_answers != " "}}
+                                <li class="poll-item">
+                                    <input type="radio" id="answer-${pollanswer.polla_aid}" name="${poll.pollq_id}" value="${pollanswer.polla_aid}">
+                                    <label for="answer-${pollanswer.polla_aid}">${pollanswer.polla_answers}</label>
+                                </li>
+                                {{else}}
+                                <li class="poll-item">
+                                    <input type="radio" name="${poll.pollq_id}" value="-1" id="new-answer">
+                                    <label for="new-answer" class="label-answer-input">
+                                        <span class="answer-input"><input class="" type="text" name="${poll.pollq_id}-new-text" data-radiobutton-value="${poll.pollq_id}-new" id="new-answer-text" value=""/></span> </label>
+                                </li>
+                                {{/if}}
+							{{/each}}
+                	    </ul>
+                        <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+	                        <span class="ui-btn-inner"><span class="ui-btn-text">
+	                        Abstimmen
+	                        </span></span>
+                            <input id="btnSubmitPoll" class="ui-btn-hidden" type="button" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
+                        </div>
+                    </div>
+                {{/each}}
+                </div>
+            {{else}}
+                <h3 class='poll-title'>Es sind derzeit keine Umfragen für Sie verfügbar.</h3>
+            {{/if}}
+        </div>
+    </div>
+</div>

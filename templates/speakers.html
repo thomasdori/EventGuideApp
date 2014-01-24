@@ -1,0 +1,12 @@
+<ul id='speaker-list' data-role='listview' data-inset='false'>
+    {{each(i, speaker) speakers}}
+        <li class='speaker' data-speaker-content="${speaker.name}|${speaker.imgUrl}|${speaker.bio}">
+        	<div class="speaker-image-wrapper">
+            	<!-- <img src='${speaker.imgUrlThumb}' title='${speaker.name}' alt='Bild von ${speaker.name}' class='speaker-image-list'/> -->
+            	<img src='${speaker.imgUrlThumb}' title='${speaker.name}' alt='Bild von ${speaker.name}' class='speaker-image-list  ${speaker.imgOrientation}'/>
+            </div>
+            <h2 class='speaker-name'>${speaker.name}</h2>
+        </li>
+
+    {{/each}}
+</ul>

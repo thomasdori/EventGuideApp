@@ -1,0 +1,150 @@
+@import "libs/jquery.mobile.flatui.less";
+
+
+/********** OVERRIDE STD VALUES *********/
+
+@primary_color-A: #004f7f; // blue
+@highlight_color-A: lighten(@primary_color-A, 10%);
+
+@primary_color-B: #00873c; // green
+@highlight_color-B: lighten(@primary_color-B, 10%);
+
+@primary_color-C: #e4e2e1; // very light grey
+@highlight_color-C: darken(@primary_color-C, 5%);
+
+@primary_color-D: #c1392b;  // red
+@highlight_color-D: lighten(@primary_color-D, 10%);
+
+@primary_color-E: #fecd2b; // yellow
+@highlight_color-E: lighten(@primary_color-E, 10%);
+
+@primary_color-F: #e5007d; // magenta
+@highlight_color-F: lighten(@primary_color-F, 10%);
+
+@primary_color-G: #ee7527; // orange
+@highlight_color-G: lighten(@primary_color-G, 10%);
+
+@secondary_color-A: rgb(47,47,47); // dark grey
+
+@secondary_color-B: rgb(11, 108, 175); // light blue
+
+/** adding some gradient to provide more dynamic backgrounds for e.g. buttons **/
+
+// using primary colors as fallback
+.green_gradient {
+    background: @primary_color-B;
+    background: -moz-linear-gradient(top,  rgba(0,171,77,1) 0%, rgba(26,125,41,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,171,77,1)), color-stop(100%,rgba(26,125,41,1)));
+    background: -webkit-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(26,125,41,1) 100%);
+    background: -o-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(26,125,41,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(26,125,41,1) 100%);
+    background: linear-gradient(to bottom,  rgba(0,171,77,1) 0%,rgba(26,125,41,1) 100%);
+}
+
+.green_gradient2 {
+    background: @primary_color-B;
+    background: -moz-linear-gradient(top,  rgba(0,171,77,1) 0%, rgba(0,138,62,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,171,77,1)), color-stop(100%,rgba(0,138,62,1)));
+    background: -webkit-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(0,138,62,1) 100%);
+    background: -o-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(0,138,62,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(0,171,77,1) 0%,rgba(0,138,62,1) 100%);
+    background: linear-gradient(to bottom,  rgba(0,171,77,1) 0%,rgba(0,138,62,1) 100%);
+}
+
+.magenta_gradient {
+    background: @primary_color-F;
+    background: -moz-linear-gradient(top,  rgba(229,0,125,1) 0%, rgba(209,0,115,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,0,125,1)), color-stop(100%,rgba(209,0,115,1)));
+    background: -webkit-linear-gradient(top,  rgba(229,0,125,1) 0%,rgba(209,0,115,1) 100%);
+    background: -o-linear-gradient(top,  rgba(229,0,125,1) 0%,rgba(209,0,115,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(229,0,125,1) 0%,rgba(209,0,115,1) 100%);
+    background: linear-gradient(to bottom,  rgba(229,0,125,1) 0%,rgba(209,0,115,1) 100%);
+}
+
+.orange_gradient {
+    background: @primary_color-G;
+    background: -moz-linear-gradient(top,  rgba(250,124,40,1) 0%, rgba(238,117,39,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(250,124,40,1)), color-stop(100%,rgba(238,117,39,1)));
+    background: -webkit-linear-gradient(top,  rgba(250,124,40,1) 0%,rgba(238,117,39,1) 100%);
+    background: -o-linear-gradient(top,  rgba(250,124,40,1) 0%,rgba(238,117,39,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(250,124,40,1) 0%,rgba(238,117,39,1) 100%);
+    background: linear-gradient(to bottom,  rgba(250,124,40,1) 0%,rgba(238,117,39,1) 100%);
+}
+
+.yellow_gradient {
+    background: @primary_color-E;
+    background: -moz-linear-gradient(top,  rgba(254,205,43,1) 0%, rgba(242,193,41,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,205,43,1)), color-stop(100%,rgba(242,193,41,1)));
+    background: -webkit-linear-gradient(top,  rgba(254,205,43,1) 0%,rgba(242,193,41,1) 100%);
+    background: -o-linear-gradient(top,  rgba(254,205,43,1) 0%,rgba(242,193,41,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(254,205,43,1) 0%,rgba(242,193,41,1) 100%);
+    background: linear-gradient(to bottom,  rgba(254,205,43,1) 0%,rgba(242,193,41,1) 100%);
+}
+
+.blue_gradient {
+    background: rgb(0,81,125);
+    background: @primary_color-A;
+    background: -moz-linear-gradient(top,  rgba(0,81,125,1) 0%, rgba(0,123,180,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,81,125,1)), color-stop(100%,rgba(0,123,180,1)));
+    background: -webkit-linear-gradient(top,  rgba(0,81,125,1) 0%,rgba(0,123,180,1) 100%);
+    background: -o-linear-gradient(top,  rgba(0,81,125,1) 0%,rgba(0,123,180,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(0,81,125,1) 0%,rgba(0,123,180,1) 100%);
+    background: linear-gradient(to bottom,  rgba(0,81,125,1) 0%,rgba(0,123,180,1) 100%);
+}
+
+.ui-body-c .ui-link:visited, .ui-body-c .ui-link:hover, .ui-body-c .ui-link:active  {
+  color: @primary_color-F;
+}
+
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb {
+  min-height: 0px;
+}
+
+.ui-li-has-thumb .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-thumb {
+  padding-left: 40px;
+}
+
+.ui-btn-up-a, .ui-btn-up-b, .ui-btn-up-c, .ui-btn-up-d, .ui-btn-up-e, .ui-btn-up-f, .ui-btn-up-g {
+  font-weight: normal;
+}
+
+.ui-header-fixed > .ui-btn-icon-notext {
+  top: 12px;
+}
+
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+  font-size: 16px;
+}
+
+.ui-content {
+  padding: 0px 0px 15px 0px;
+
+  #appContent {
+    
+    #subPageContent {
+      padding: 0px 15px 0px 15px;
+    }
+
+    .ui-listview {
+      padding: 15px;
+
+      li.ui-btn-up-c{
+         background: #FAFAFA !important;
+       }
+
+      li.ui-btn-up-c:nth-child(even){
+        background: #FFF !important;
+      }
+
+
+      li.speaker:hover,li.session:hover{
+        background: @primary_color-C !important;
+      }
+
+      li.speaker:hover,li.session:nth-child(even):hover{
+        background: @primary_color-C !important;
+      }
+    }
+  }
+}

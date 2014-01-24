@@ -23,20 +23,6 @@ IndexViewModifier.prototype.startListening = function(){
 };
 
 /**
- * Changes the menu icon.
- */
-IndexViewModifier.prototype.showMenuIcon = function () {
-    this.switchMenuIcons(this.barsIconClass, this.arrowIconClass);
-};
-
-/**
- * Shows the back icon.
- */
-IndexViewModifier.prototype.showBackIcon = function () {
-    this.switchMenuIcons(this.arrowIconClass, this.barsIconClass);
-};
-
-/**
  * Hide the login form and show the app content.
  */
 IndexViewModifier.prototype.showAppView = function () {
@@ -158,14 +144,3 @@ IndexViewModifier.prototype.loadAndApplyTemplate = function(templateName, templa
 IndexViewModifier.prototype.getTemplatePath = function(templateFileName){
     return 'templates/' + templateFileName + '.html';
 };
-
-///**
-// * Switches between menu and back icon.
-// * @param oldIconName
-// * @param newIconName
-// */
-//IndexViewModifier.prototype.switchMenuIcons = function (oldIconName, newIconName) {
-//    $('#iconbutton').attr('data-icon', oldIconName).find('.ui-icon')
-//        .removeClass(oldIconName)
-//        .addClass(newIconName);
-//};

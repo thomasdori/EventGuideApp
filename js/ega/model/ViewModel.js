@@ -18,9 +18,9 @@ function ViewModel() {
  * This method persists the menu content as JSON.
  * @param data
  */
-ViewModel.prototype.setMenu = function (event, data) {
-    this.storageApi.set(this.menuKey, data);
-    jQuery.event.trigger(Constants.events.updatedMenu, [data]);
+ViewModel.prototype.setMenu = function (event, menu) {
+    this.storageApi.set(this.menuKey, menu);
+    $.event.trigger(Constants.events.updatedMenu);
 };
 
 /**
@@ -41,9 +41,9 @@ ViewModel.prototype.getMenu = function () {
  * @param data
  * @param key
  */
-ViewModel.prototype.setContent = function (event, data) {
-    this.storageApi.set(data.pageId, data.content);
-    jQuery.event.trigger(Constants.events.updatedContent);
+ViewModel.prototype.setContent = function (event, pageId, content) {
+    this.storageApi.set(pageId, content);
+    $.event.trigger(Constants.events.updatedContent);
 };
 
 /**
@@ -66,7 +66,7 @@ ViewModel.prototype.getContent = function (url) {
  */
 ViewModel.prototype.setMessage = function (event, message) {
     this.storageApi.set(this.messageKey, message);
-    jQuery.event.trigger(Constants.events.updatedMessage);
+    $.event.trigger(Constants.events.updatedMessage);
 };
 
 /**
@@ -82,5 +82,5 @@ ViewModel.prototype.getMessage = function () {
  */
 ViewModel.prototype.removeMessage = function () {
     this.storageApi.remove(this.messageKey);
-    jQuery.event.trigger(Constants.events.updatedMessage);
+    $.event.trigger(Constants.events.updatedMessage);
 };

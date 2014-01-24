@@ -57,7 +57,7 @@ UserModel.prototype.logout = function () {
 UserModel.prototype.setUser = function(event, user){
     jQuery.event.trigger(Constants.events.userLoggedIn);
     this.storageApi.set(this.userIsLoggedInKey, 'true');
-    this.storageApi.set(this.userKey, user);
+    this.storageApi.set(this.userKey, user.content);
 };
 
 /**

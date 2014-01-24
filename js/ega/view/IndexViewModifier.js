@@ -3,8 +3,8 @@
  * @constructor
  */
 function IndexViewModifier() {
-    this.barsIconClass = 'ui-icon-bars';
-    this.arrowIconClass = 'ui-icon-arrow-l';
+//    this.barsIconClass = 'ui-icon-bars';
+//    this.arrowIconClass = 'ui-icon-arrow-l';
     this.viewModel = new ViewModel();
 }
 
@@ -60,29 +60,15 @@ IndexViewModifier.prototype.updateMenu = function(){
  *
  */
 IndexViewModifier.prototype.updateContent = function(){
-//    var data = this.viewModel.getContent(this.viewModel.lastViewUrl),
-//        templateFileName,
-//        templateContent;
-//
-//    if(templateContent){
-//        if (data.posts) {
-//            templateFileName = 'posts';
-//            templateContent = data;
-//        } else if (data.page) {
-//            templateFileName = 'page';
-//            templateContent = data.page;
-//        } else if (data.templateFile && data.templateContent) {
-//            templateFileName = data.templateFile;
-//            templateContent = data.templateContent;
-//        } else {
-//            return;
-//        }
-//
-//        // load the template file via AJAX
-//        this.loadAndApplyTemplate(templateFileName, templateContent, '#appContent');
-//    }
-//    // close the menu so the main content is visible
-//    $('#nav-panel').panel('close');
+    var data = this.viewModel.getContent();
+
+    if(data){
+        $('#pageTitle').html(this.viewModel.getCurrentPageTitle());
+        this.loadAndApplyTemplate(data.template, data.content, '#appContent');
+
+        // close the menu so the main content is visible
+        $('#nav-panel').panel('close');
+    }
 };
 
 /**

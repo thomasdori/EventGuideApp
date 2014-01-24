@@ -58,7 +58,7 @@ CallBackHandler.prototype.contentCallback = function (data) {
  */
 CallBackHandler.prototype.validateServerData = function (data, successCallbackEventName, errorMessage) {
     if (!data.error && data.content) {
-        var argument = {content: data.content};
+        var argument = {content: data.content, template: data.template};
         $.event.trigger(successCallbackEventName, argument);
     } else {
         $.event.trigger(Constants.events.receivedMessage, errorMessage)

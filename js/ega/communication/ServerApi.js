@@ -27,8 +27,8 @@ ServerApi.prototype.getJSON = function (method, data, callback) {
  * This method is used to get default content provided by the backend.
  * @param site
  */
-ServerApi.prototype.getContent = function (site) {
-    this.getJSON(Constants.serverUrl + site, {}, this.callBackHandler.contentCallback.bind(this.callBackHandler));
+ServerApi.prototype.getContent = function (url) {
+    this.getJSON(url, {}, this.callBackHandler.contentCallback.bind(this.callBackHandler));
 };
 
 /**

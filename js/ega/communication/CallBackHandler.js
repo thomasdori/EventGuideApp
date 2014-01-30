@@ -2,20 +2,22 @@
  * This class contains all the methods that handle server callbacks.
  * @constructor
  */
-function CallBackHandler(){}
+function CallBackHandler(){
+    this.eventHub = new EventHub();
+}
 
 /**
  * This method gets called if a request failed.
  */
 CallBackHandler.prototype.requestFailed = function(){
-    $.event.trigger(Constants.events.receivedMessage, 'Es ist ein Fehler in der Kommunikation mit dem Server aufgetreten.');
+    this.eventHub.trigger(this.eventHub.events.receivedMessage, 'Es ist ein Fehler in der Kommunikation mit dem Server aufgetreten.');
 };
 
 /**
  * This method gets called after every request.
  */
 CallBackHandler.prototype.requestDone = function(){
-    $.event.trigger(Constants.events.requestDone);
+    this.eventHub.trigger(this.eventHub.events.requestDone);
 };
 
 /**
@@ -23,7 +25,7 @@ CallBackHandler.prototype.requestDone = function(){
  * @param data - The data returned form the server.
  */
 CallBackHandler.prototype.loginCallback = function (data) {
-    this.validateServerData(data, Constants.events.receivedLoginData, 'Diese E-Mail Adresse wurde noch nicht registriert.');
+    this.validateServerData(data, this.eventHub.events.receivedLoginData, 'Diese E-Mail Adresse wurde noch nicht registriert.');
 };
 
 /**
@@ -31,7 +33,7 @@ CallBackHandler.prototype.loginCallback = function (data) {
  * @param data - The data returned form the server.
  */
 CallBackHandler.prototype.logoutCallback = function (data) {
-    this.validateServerData(data, Constants.events.receivedLogoutData, 'Beim Logout trat ein Fehler auf.');
+    this.validateServerData(data, this.eventHub.events.receivedLogoutData, 'Beim Logout trat ein Fehler auf.');
 };
 
 /**
@@ -39,7 +41,7 @@ CallBackHandler.prototype.logoutCallback = function (data) {
  * @param data
  */
 CallBackHandler.prototype.menuCallback = function (data) {
-    this.validateServerData(data, Constants.events.receivedMenuData, 'Bein Laden des Menüs trat ein Fehler auf.');
+    this.validateServerData(data, this.eventHub.events.receivedMenuData, 'Bein Laden des Menüs trat ein Fehler auf.');
 };
 
 /**
@@ -47,7 +49,7 @@ CallBackHandler.prototype.menuCallback = function (data) {
  * @param data
  */
 CallBackHandler.prototype.contentCallback = function (data) {
-    this.validateServerData(data, Constants.events.receivedContentData, 'Bein Laden der Inhalte trat ein Fehler auf.');
+    this.validateServerData(data, this.eventHub.events.receivedContentData, 'Bein Laden der Inhalte trat ein Fehler auf.');
 };
 
 /**
@@ -59,8 +61,8 @@ CallBackHandler.prototype.contentCallback = function (data) {
 CallBackHandler.prototype.validateServerData = function (data, successCallbackEventName, errorMessage) {
     if (!data.error && data.content) {
         var argument = {content: data.content, template: data.template};
-        $.event.trigger(successCallbackEventName, argument);
+        this.eventHub.trigger(successCallbackEventName, argument);
     } else {
-        $.event.trigger(Constants.events.receivedMessage, errorMessage)
+        this.eventHub.trigger(this.eventHub.events.receivedMessage, errorMessage)
     }
 };

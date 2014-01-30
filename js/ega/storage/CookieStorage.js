@@ -17,7 +17,7 @@
  |*|
  \*/
 
-var docCookies = {
+var cookieStorage = {
     getItem: function (sKey) {
         return decodeURI(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURI(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
     },

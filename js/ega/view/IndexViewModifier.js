@@ -6,31 +6,31 @@ function IndexViewModifier() {
 //    this.barsIconClass = 'ui-icon-bars';
 //    this.arrowIconClass = 'ui-icon-arrow-l';
     this.viewModel = new ViewModel();
+    this.eventHub = new EventHub();
 }
 
 /**
  * This method binds the functions to the custom events
  */
 IndexViewModifier.prototype.startListening = function(){
-    $(document)
-        .bind(Constants.events.requestInitiated, this.showLoadingAnimation.bind(this))
-        .bind(Constants.events.requestDone, this.hideLoadingAnimation.bind(this))
-        .bind(Constants.events.updatedMenu, this.updateMenu.bind(this))
-        .bind(Constants.events.updatedContent, this.updateContent.bind(this))
-        .bind(Constants.events.updatedMessage, this.updateMessage.bind(this))
-        .bind(Constants.events.userLoggedOut, this.showLoginView.bind(this))
-        .bind(Constants.events.userLoggedIn, this.showAppView.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.requestInitiated, this.showLoadingAnimation.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.requestDone, this.hideLoadingAnimation.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.updatedMenu, this.updateMenu.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.updatedContent, this.updateContent.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.updatedMessage, this.updateMessage.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.userLoggedOut, this.showLoginView.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.userLoggedIn, this.showAppView.bind(this));
 };
 
 /**
  * Hide the login form and show the app content.
  */
 IndexViewModifier.prototype.showAppView = function () {
-    this.updateMenu();
-
-    $('#iconbutton').show();
     $('#frmLogin').hide();
     $('#appContent').show();
+    $('#iconbutton').show();
+
+    this.updateMenu();
 };
 
 /**

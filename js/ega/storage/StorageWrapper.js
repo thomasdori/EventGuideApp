@@ -1,21 +1,21 @@
 /**
- * This class is in response of handling the storageApi.
+ * This class is in response of handling the storage. Either session- or cookie storage.
  * @constructor
  */
-function StorageApi() {}
+function StorageWrapper() {}
 
 /**
  * This property is either the sessionStorage or a cookie storage.
  * @type {Storage}
  */
-StorageApi.prototype.storage = (sessionStorage) ? sessionStorage : docCookies;
+StorageWrapper.prototype.storage = (sessionStorage) ? sessionStorage : cookieStorage;
 
 /**
  * This method gets the object that corresponds to the given key.
  * @param key
  * @returns {*}
  */
-StorageApi.prototype.get = function (key) {
+StorageWrapper.prototype.get = function (key) {
     var returnValue = this.storage.getItem(key);
 
     return JSON.parse(returnValue);
@@ -26,7 +26,7 @@ StorageApi.prototype.get = function (key) {
  * @param key
  * @param object
  */
-StorageApi.prototype.set = function (key, object) {
+StorageWrapper.prototype.set = function (key, object) {
     this.storage.setItem(key, JSON.stringify(object))
 };
 
@@ -34,13 +34,13 @@ StorageApi.prototype.set = function (key, object) {
  * This method removes the one object with the given key.
  * @param key
  */
-StorageApi.prototype.remove = function (key) {
+StorageWrapper.prototype.remove = function (key) {
     this.storage.removeItem(key);
 };
 
 /**
  * This method removes everything from the storage.
  */
-StorageApi.prototype.clear = function () {
+StorageWrapper.prototype.clear = function () {
     this.storage.clear();
 };

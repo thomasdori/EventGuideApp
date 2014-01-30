@@ -34,35 +34,35 @@ IndexActionHandler.prototype.closePopupHandler = function (){
 
 /**
  * This method gets called when the login form is submitted.
- * @returns {boolean}
  */
-IndexActionHandler.prototype.loginHandler = function (event) {
+IndexActionHandler.prototype.loginHandler = function () {
     var email = $('#txtEmail').val();
-    event.preventDefault();
 
     if(email !== ''){
         this.userModel.login(email);
     } else {
         this.viewModel.setMessage('Bitte füllen Sie das E-Mail-Feld aus.')
     }
+
+    return false;
 };
 
 /**
  * This method gets called when the logout button was clicked.
  */
-IndexActionHandler.prototype.logoutHandler = function (event) {
-    event.preventDefault();
+IndexActionHandler.prototype.logoutHandler = function () {
     this.userModel.logout();
+
+    return false;
 };
 
 /**
  * This method gets called when a menu item was clicked
- * @returns {boolean}
  */
 IndexActionHandler.prototype.menuItemClickHandler = function (event) {
     var menuItem = $(event.currentTarget);
-    event.preventDefault();
-
     this.viewModel.setLastRequestedView(menuItem.attr('href'), menuItem.attr('title'));
+
+    return false;
 };
 

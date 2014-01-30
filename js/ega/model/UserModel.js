@@ -5,14 +5,13 @@
 function UserModel() {
     this.userIsLoggedInKey = 'isLoggedIn';
     this.userKey = 'user';
-    this.storageApi = new StorageApi();
+    this.storageApi = new StorageWrapper();
     this.serverApi = new ServerApi();
+    this.eventHub = new EventHub();
 
-    $.event.trigger(this.isLoggedIn() ? Constants.events.userLoggedIn : Constants.events.userLoggedOut);
-
-    $(document)
-        .bind(Constants.events.receivedLogoutData, this.removeUser.bind(this))
-        .bind(Constants.events.receivedLoginData, this.setUser.bind(this));
+    this.eventHub.trigger(this.isLoggedIn() ? this.eventHub.events.userLoggedIn : this.eventHub.events.userLoggedOut);
+    this.eventHub.subscribe(this.eventHub.events.receivedLogoutData, this.removeUser.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.receivedLoginData, this.setUser.bind(this));
 }
 
 /**
@@ -21,14 +20,6 @@ function UserModel() {
  */
 UserModel.prototype.isLoggedIn = function () {
     return this.storageApi.get(this.userIsLoggedInKey);
-};
-
-/**
- * This method returns the email address of the loggedin user
- * @returns {*}
- */
-UserModel.prototype.getLoggedInUser = function () {
-    return this.storageApi.get(this.userKey);
 };
 
 /**
@@ -53,9 +44,10 @@ UserModel.prototype.logout = function () {
 /**
  * This method sets the user variable in the storage
  * @param user
+ * @param event
  */
 UserModel.prototype.setUser = function(event, user){
-    jQuery.event.trigger(Constants.events.userLoggedIn);
+    this.eventHub.trigger(this.eventHub.events.userLoggedIn);
     this.storageApi.set(this.userIsLoggedInKey, 'true');
     this.storageApi.set(this.userKey, user.content);
 };
@@ -64,6 +56,6 @@ UserModel.prototype.setUser = function(event, user){
  * This method removes the user from the storage.
  */
 UserModel.prototype.removeUser = function(){
-    jQuery.event.trigger(Constants.events.userLoggedOut);
+    this.eventHub.trigger(this.eventHub.events.userLoggedOut);
     this.storageApi.clear();
 };

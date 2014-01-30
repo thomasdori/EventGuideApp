@@ -4,6 +4,7 @@
  */
 function ServerApi() {
     this.callBackHandler = new CallBackHandler();
+    this.eventHub = new EventHub();
 }
 
 /**
@@ -13,9 +14,9 @@ function ServerApi() {
  * @param callback
  */
 ServerApi.prototype.getJSON = function (method, data, callback) {
-    var url = Constants.serverUrl + 'EventGuideService/api/' + method;
+    var url = 'http://localhost/EventGuideService/api/' + method + '/';
 
-    $.event.trigger(Constants.events.requestInitiated);
+    this.eventHub.trigger(this.eventHub.events.requestInitiated);
     $.support.cors = true;
 
     $.getJSON(url, data, callback)
@@ -25,7 +26,7 @@ ServerApi.prototype.getJSON = function (method, data, callback) {
 
 /**
  * This method is used to get default content provided by the backend.
- * @param site
+ * @param url
  */
 ServerApi.prototype.getContent = function (url) {
     this.getJSON(url, {}, this.callBackHandler.contentCallback.bind(this.callBackHandler));

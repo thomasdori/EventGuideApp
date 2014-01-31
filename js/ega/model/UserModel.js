@@ -5,7 +5,7 @@
 function UserModel() {
     this.userIsLoggedInKey = 'isLoggedIn';
     this.userKey = 'user';
-    this.storageApi = new StorageWrapper();
+    this.storageWrapper = new StorageWrapper();
     this.serverApi = new ServerApi();
     this.eventHub = new EventHub();
 
@@ -19,7 +19,7 @@ function UserModel() {
  * @returns {*}
  */
 UserModel.prototype.isLoggedIn = function () {
-    return this.storageApi.get(this.userIsLoggedInKey);
+    return this.storageWrapper.get(this.userIsLoggedInKey);
 };
 
 /**
@@ -48,8 +48,12 @@ UserModel.prototype.logout = function () {
  */
 UserModel.prototype.setUser = function(event, user){
     this.eventHub.trigger(this.eventHub.events.userLoggedIn);
-    this.storageApi.set(this.userIsLoggedInKey, 'true');
-    this.storageApi.set(this.userKey, user.content);
+    this.storageWrapper.set(this.userIsLoggedInKey, 'true');
+    this.storageWrapper.set(this.userKey, user.content);
+};
+
+UserModel.prototype.getUser = function(){
+    return this.storageWrapper.get(this.userKey);
 };
 
 /**
@@ -57,5 +61,5 @@ UserModel.prototype.setUser = function(event, user){
  */
 UserModel.prototype.removeUser = function(){
     this.eventHub.trigger(this.eventHub.events.userLoggedOut);
-    this.storageApi.clear();
+    this.storageWrapper.clear();
 };

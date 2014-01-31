@@ -8,7 +8,7 @@ function ViewModel() {
     this.currentViewKey = 'currentView';
     this.viewStackKey = 'viewStack';
     this.serverApi = new ServerApi();
-    this.storageApi = new StorageWrapper();
+    this.storageWrapper = new StorageWrapper();
     this.eventHub = new EventHub();
 
     this.eventHub.subscribe(this.eventHub.events.receivedMessage, this.setMessage.bind(this));
@@ -22,7 +22,7 @@ function ViewModel() {
  * @param menu
  */
 ViewModel.prototype.setMenu = function (event, menu) {
-    this.storageApi.set(this.menuKey, menu);
+    this.storageWrapper.set(this.menuKey, menu);
     this.eventHub.trigger(this.eventHub.events.updatedMenu);
 };
 
@@ -31,7 +31,7 @@ ViewModel.prototype.setMenu = function (event, menu) {
  * @returns {*}
  */
 ViewModel.prototype.getMenu = function () {
-    var returnValue = this.storageApi.get(this.menuKey);
+    var returnValue = this.storageWrapper.get(this.menuKey);
 
     if (!returnValue || returnValue === null)
         this.serverApi.getMenu();
@@ -48,7 +48,7 @@ ViewModel.prototype.setContent = function (event, content) {
     var url = this.getCurrentPageUrl();
     
     if(url && url !== null){
-        this.storageApi.set(url, content);
+        this.storageWrapper.set(url, content);
         this.eventHub.trigger(this.eventHub.events.updatedContent);
     }
 };
@@ -62,7 +62,7 @@ ViewModel.prototype.getContent = function () {
         returnValue;
 
     if(url && url !== null){
-        returnValue = this.storageApi.get(url);
+        returnValue = this.storageWrapper.get(url);
 
         if (!returnValue || returnValue === null)
             this.serverApi.getContent(url);
@@ -77,7 +77,7 @@ ViewModel.prototype.getContent = function () {
  * @param event
  */
 ViewModel.prototype.setMessage = function (event, message) {
-    this.storageApi.set(this.messageKey, message);
+    this.storageWrapper.set(this.messageKey, message);
     this.eventHub.trigger(this.eventHub.events.updatedMessage);
 };
 
@@ -86,14 +86,14 @@ ViewModel.prototype.setMessage = function (event, message) {
  * @returns {*}
  */
 ViewModel.prototype.getMessage = function () {
-    return this.storageApi.get(this.messageKey);
+    return this.storageWrapper.get(this.messageKey);
 };
 
 /**
  * This method removes the message from the storage.
  */
 ViewModel.prototype.removeMessage = function () {
-    this.storageApi.remove(this.messageKey);
+    this.storageWrapper.remove(this.messageKey);
     this.eventHub.trigger(this.eventHub.events.updatedMessage);
 };
 
@@ -102,7 +102,7 @@ ViewModel.prototype.removeMessage = function () {
 * @returns {*}
 */
 ViewModel.prototype.getCurrentPageTitle = function(){
-    return this.storageApi.get(this.currentViewKey).title;
+    return this.storageWrapper.get(this.currentViewKey).title;
 };
 
 /**
@@ -110,7 +110,7 @@ ViewModel.prototype.getCurrentPageTitle = function(){
 * @returns {*}
 */
 ViewModel.prototype.getCurrentPageUrl = function(){
-    return this.storageApi.get(this.currentViewKey).url;
+    return this.storageWrapper.get(this.currentViewKey).url;
 };
 
 /**
@@ -118,7 +118,7 @@ ViewModel.prototype.getCurrentPageUrl = function(){
  * @returns {Number|number|c.length|*|length}
  */
 ViewModel.prototype.getViewStackSize = function(){
-    var viewStack = this.storageApi.get(this.viewStackKey);
+    var viewStack = this.storageWrapper.get(this.viewStackKey);
     return (viewStack && viewStack != null) ? viewStack.length : 0;
 };
 
@@ -134,7 +134,7 @@ ViewModel.prototype.showView = function (url, title){
                 "title": title
             };
 
-        this.storageApi.set(this.currentViewKey, currentView);
+        this.storageWrapper.set(this.currentViewKey, currentView);
         this.eventHub.trigger(this.eventHub.events.updatedContent);
     }
 };
@@ -157,12 +157,12 @@ ViewModel.prototype.pushView = function (url, title){
             };
 
         //add the view to the view stack
-        var viewStack = this.storageApi.get(this.viewStackKey);
+        var viewStack = this.storageWrapper.get(this.viewStackKey);
         viewStack = viewStack ? viewStack : [];
         viewStack.push(previousView);
-        this.storageApi.set(this.viewStackKey, viewStack);
+        this.storageWrapper.set(this.viewStackKey, viewStack);
 
-        this.storageApi.set(this.currentViewKey, currentView);
+        this.storageWrapper.set(this.currentViewKey, currentView);
         this.eventHub.trigger(this.eventHub.events.updatedContent);
     }
 };
@@ -171,14 +171,30 @@ ViewModel.prototype.pushView = function (url, title){
  * This method pops the last previous view from the view stack and updates the model.
  */
 ViewModel.prototype.popView = function(){
-    var viewStack = this.storageApi.get(this.viewStackKey),
+    var viewStack = this.storageWrapper.get(this.viewStackKey),
         previousView;
 
     viewStack = viewStack ? viewStack : [];
     previousView = viewStack.pop();
-    this.storageApi.set(this.currentViewKey, previousView);
-    this.storageApi.set(this.viewStackKey, viewStack);
+    this.storageWrapper.set(this.currentViewKey, previousView);
+    this.storageWrapper.set(this.viewStackKey, viewStack);
     this.eventHub.trigger(this.eventHub.events.updatedContent);
 };
 
+/**
+ * This method send the given comment to the server.
+ * @param sessionId
+ * @param comment
+ */
+ViewModel.prototype.setComment = function(userId, sessionId, comment){
+    this.serverApi.sendComment(userId, sessionId, comment);
+};
 
+/**
+ * This method send the poll data to the server.
+ * @param pollId
+ * @param data
+ */
+ViewModel.prototype.setPollVote = function(userId, pollId, data){
+    this.serverApi.sendPollVote(userId, pollId, data);
+};

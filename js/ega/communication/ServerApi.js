@@ -53,3 +53,25 @@ ServerApi.prototype.login = function (email) {
 ServerApi.prototype.logout = function () {
     this.getJSON('authentication/logout', {}, this.callBackHandler.logoutCallback.bind(this.callBackHandler));
 };
+
+/**
+ * This methods sends the comment for a session.
+ * @userId userId
+ * @param sessionId
+ * @param comment
+ */
+ServerApi.prototype.sendComment = function(userId, sessionId, comment){
+    var data = {'user_id': userId, 'session_id': sessionId, 'comment': comment};
+    this.getJSON('respond.submit_comment', data, this.callBackHandler.submissionCallbackHandler.bind(this.callBackHandler));
+};
+
+/**
+ * This methods sends the poll vote for a session.
+ * @userId userId
+ * @param sessionId
+ * @param comment
+ */
+ServerApi.prototype.sendPollVote = function(userId, pollId, selectedValue){
+    var data = {'user_id': userId, 'poll_id': pollId, 'selectedValue': selectedValue};
+    this.getJSON('polls.vote_poll', data, this.callBackHandler.submissionCallbackHandler.bind(this.callBackHandler));
+};

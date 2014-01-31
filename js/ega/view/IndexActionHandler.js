@@ -93,7 +93,9 @@ IndexActionHandler.prototype.backButtonHandler = function () {
 /**
  * This method handles the submission of comments.
  */
-IndexActionHandler.prototype.commentHandler = function (){
+IndexActionHandler.prototype.commentHandler = function (event){
+    var form = $(event.target);
+    this.viewModel.setComment(this.userModel.getUser(), form.find('#session_id').val(), form.find('#comment').val());
 
     return false;
 };
@@ -101,7 +103,13 @@ IndexActionHandler.prototype.commentHandler = function (){
 /**
  * This method handles the submission of polls.
  */
-IndexActionHandler.prototype.pollHandler = function (){
+IndexActionHandler.prototype.pollHandler = function (event){
+    var form = $(event.target),
+        pollId = form.find('#poll-id').val(),
+        selectedValue = $("input[type='radio'][name='poll-" + pollId + "']:checked").val();
+
+    this.viewModel.setPollVote(this.userModel.getUser(), pollId, selectedValue);
 
     return false;
 };
+

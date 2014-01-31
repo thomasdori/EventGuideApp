@@ -6,6 +6,7 @@ EventHub.prototype.events = {
     receivedContentData: 'receivedContentData',
     receivedMenuData: 'receivedMenuData',
     receivedMessage: 'receivedMessage',
+    receivedOk: 'receivedOk',
     requestInitiated: 'requestInitiated',
     requestDone: 'requestDone',
     updatedMenu: 'updatedMenu',

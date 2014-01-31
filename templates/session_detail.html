@@ -13,12 +13,12 @@
     </ul>
 
     <p id="session-content">${content}</p>
-        <form id="frmComment" action="/api/respond.submit_comment">
+        <form id="frmComment">
             <div class="limited-width comment-container">
-                <textarea  id="comment_textarea" placeholder="Kommentar oder Fragen zum Vortrag"></textarea>
-                <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+                <textarea  id="comment" placeholder="Kommentar oder Fragen zum Vortrag"></textarea>
+                <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-a"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-disabled="false" aria-disabled="false">
 	                <span class="ui-btn-inner"><span class="ui-btn-text">Kommentar absenden</span></span>
-                    <input id="btnSubmitComment" class="ui-btn-hidden" type="submit" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
+                    <input id="btnSubmitComment" class="ui-btn-hidden" type="submit" data-theme="a" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
                 </div>
                 <input type="hidden" id="session_id" name="session_id" value="${id}" />
             </div>
@@ -45,9 +45,9 @@
                         {{/each}}
                     </ul>
 
-                    <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+                    <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-a"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a" data-disabled="false" aria-disabled="false">
 	                    <span class="ui-btn-inner"><span class="ui-btn-text">Abstimmen</span></span>
-                        <input id="btnSubmitPoll" class="ui-btn-hidden" type="submit" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
+                        <input id="btnSubmitPoll" class="ui-btn-hidden" type="submit" data-theme="a" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
                     </div>
                     <input type="hidden" id="poll_id" name="poll_id" value="${poll.pollq_id}" />
                 </div>

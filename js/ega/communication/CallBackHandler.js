@@ -53,6 +53,15 @@ CallBackHandler.prototype.contentCallback = function (data) {
 };
 
 /**
+ * This message handles the submission callback for feedback and poll requests.
+ * @param data
+ */
+CallBackHandler.prototype.submissionCallbackHandler = function(data){
+    var message = (data.error) ? 'Bein Senden der Inhalte trat ein Fehler auf.' : 'Ihr Feedback wurde erfolgreich übermittelt.'
+    this.eventHub.trigger(this.eventHub.events.receivedMessage, message);
+};
+
+/**
  * This message validates the data returned from the server and check if it contains an error message.
  * @param data
  * @param successCallbackEventName

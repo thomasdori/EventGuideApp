@@ -1,15 +1,14 @@
 <div id="subPageContent">
     <div id="content_container" class="ui-content" data-role="content" role="main">
         <div class="jqm-content ui-content" data-role="content" role="main">
-            <form id="frmComment" class="limited-width" method="post"  data-postid-toSubmit ="${feedbackId}">
+            <form id="frmComment" action="/api/respond.submit_comment">
                 <p>${feedbackContent}</p>
                 <textarea  id="comment_textarea" placeholder="hre Impressionen vom ersten EGA Event" ></textarea>
-                <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
-                <span class="ui-btn-inner"><span class="ui-btn-text">
-                 Übermitteln
-                </span></span>
-                    <input id="btnComment"  class="ui-btn-hidden" type="submit" data-theme="b" value="comment" data-disabled="false"/>
+                <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+                    <span class="ui-btn-inner"><span class="ui-btn-text">Kommentar absenden</span></span>
+                    <input id="btnSubmitComment" class="ui-btn-hidden" type="submit" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
                 </div>
+                <input type="hidden" id="post_id" name="post_id" value="${feedbackId}">
             </form>
         </div>
     </div>

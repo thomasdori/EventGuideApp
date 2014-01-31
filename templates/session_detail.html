@@ -13,33 +13,44 @@
     </ul>
 
     <p id="session-content">${content}</p>
+        <form id="frmComment" action="/api/respond.submit_comment">
+            <div class="limited-width comment-container">
+                <textarea  id="comment_textarea" placeholder="Kommentar oder Fragen zum Vortrag"></textarea>
+                <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+	                <span class="ui-btn-inner"><span class="ui-btn-text">Kommentar absenden</span></span>
+                    <input id="btnSubmitComment" class="ui-btn-hidden" type="submit" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
+                </div>
+                <input type="hidden" id="session_id" name="session_id" value="${id}" />
+            </div>
+        </form>
 
-    <div class="limited-width comment-container">
-        <textarea  id="comment_textarea" placeholder="Kommentar oder Fragen zum Vortrag"></textarea>
-        <input id="btnSubmitComment" type="submit" value="Kommentar absenden"/>
-    </div>
+        {{if poll && poll == "1"}}
+            <form id="frmPoll" action="/api/polls.vote_poll">
+                <div class="poll-container limited-width">
+                    <h3 class='poll-title'>${poll.pollq_question}</h3>
+                    <ul class="poll-choices-list">
+                        {{each(i, pollanswer) poll.pollAnswers}}
+                            {{if pollanswer.polla_answers != " "}}
+                                <li class="poll-item">
+                                    <input type="radio" id="answer-${pollanswer.polla_aid}" name="${poll.pollq_id}" value="${pollanswer.polla_aid}">
+                                    <label for="answer-${pollanswer.polla_aid}">${pollanswer.polla_answers}</label>
+                                </li>
+                            {{else}}
+                                <li class="poll-item">
+                                    <input type="radio" name="${poll.pollq_id}" value="-1" id="new-answer">
+                                    <label for="new-answer" class="label-answer-input">
+                                        <span class="answer-input"><input class="" type="text" name="${poll.pollq_id}-new-text" data-radiobutton-value="${poll.pollq_id}-new" id="new-answer-text" value=""/></span> </label>
+                                </li>
+                            {{/if}}
+                        {{/each}}
+                    </ul>
 
-    {{if poll && poll == "1"}}
-        <div class="poll-container limited-width">
-            <h3 class='poll-title'>${poll.pollq_question}</h3>
-            <ul class="poll-choices-list">
-                {{each(i, pollanswer) poll.pollAnswers}}
-                    {{if pollanswer.polla_answers != " "}}
-                        <li class="poll-item">
-                            <input type="radio" id="answer-${pollanswer.polla_aid}" name="${poll.pollq_id}" value="${pollanswer.polla_aid}">
-                            <label for="answer-${pollanswer.polla_aid}">${pollanswer.polla_answers}</label>
-                        </li>
-                    {{else}}
-                        <li class="poll-item">
-                            <input type="radio" name="${poll.pollq_id}" value="-1" id="new-answer">
-                            <label for="new-answer" class="label-answer-input">
-                                <span class="answer-input"><input class="" type="text" name="${poll.pollq_id}-new-text" data-radiobutton-value="${poll.pollq_id}-new" id="new-answer-text" value=""/></span> </label>
-                        </li>
-                    {{/if}}
-                {{/each}}
-            </ul>
-
-            <input id="btnSubmitPoll" type="submit" value="Stimme absenden"/>
-        </div>
-    {{/if}}
+                    <div class="ui-submit ui-btn ui-shadow ui-btn-corner-all ui-btn-up-b"  data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="b" data-disabled="false" aria-disabled="false">
+	                    <span class="ui-btn-inner"><span class="ui-btn-text">Abstimmen</span></span>
+                        <input id="btnSubmitPoll" class="ui-btn-hidden" type="submit" data-theme="b" data-poll-id="${poll.pollq_id}" value="comment" data-disabled="false"/>
+                    </div>
+                    <input type="hidden" id="poll_id" name="poll_id" value="${poll.pollq_id}" />
+                </div>
+            </form>
+        {{/if}}
 </div>

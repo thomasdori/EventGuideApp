@@ -13,8 +13,10 @@ function IndexActionHandler() {
 IndexActionHandler.prototype.viewDidLoad = function () {
     // Action bindings for UI element events
     $('body')
-        .on('click', '#message-close-button', this.closePopupHandler.bind(this))
         .on('submit', '#frmLogin', this.loginHandler.bind(this))
+        .on('submit', '#frmComment', this.commentHandler.bind(this))
+        .on('submit', '#frmPoll', this.pollHandler.bind(this))
+        .on('click', '#message-close-button', this.closePopupHandler.bind(this))
         .on('click', '#back-button', this.backButtonHandler.bind(this))
         .on('click', 'a.menu-item#logout', this.logoutHandler.bind(this))
         .on('click', 'a.menu-item:not(#logout)', this.itemClickHandler.bind(this))
@@ -82,8 +84,24 @@ IndexActionHandler.prototype.detailItemClickHandler = function (event) {
 /**
  * This method gets called when a menu item, speaker link or list item was clicked.
  */
-IndexActionHandler.prototype.backButtonHandler = function (event) {
+IndexActionHandler.prototype.backButtonHandler = function () {
     this.viewModel.popView();
+
+    return false;
+};
+
+/**
+ * This method handles the submission of comments.
+ */
+IndexActionHandler.prototype.commentHandler = function (){
+
+    return false;
+};
+
+/**
+ * This method handles the submission of polls.
+ */
+IndexActionHandler.prototype.pollHandler = function (){
 
     return false;
 };

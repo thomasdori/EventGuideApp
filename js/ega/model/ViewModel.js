@@ -5,8 +5,8 @@
 function ViewModel() {
     this.messageKey = 'message';
     this.menuKey = 'menu';
-    this.titleKey = 'title';
-    this.urlKey = 'url';
+    this.currentViewKey = 'currentView';
+    this.viewStackKey = 'viewStack';
     this.serverApi = new ServerApi();
     this.storageApi = new StorageWrapper();
     this.eventHub = new EventHub();
@@ -98,19 +98,28 @@ ViewModel.prototype.removeMessage = function () {
 };
 
 /**
- * This method returns the title of the currently requested page.
- * @returns {*}
- */
+* This method returns the title of the currently requested page.
+* @returns {*}
+*/
 ViewModel.prototype.getCurrentPageTitle = function(){
-    return this.storageApi.get(this.titleKey);
+    return this.storageApi.get(this.currentViewKey).title;
 };
 
 /**
- * * This method returns the url of the currently requested page.
- * @returns {*}
- */
+* * This method returns the url of the currently requested page.
+* @returns {*}
+*/
 ViewModel.prototype.getCurrentPageUrl = function(){
-    return this.storageApi.get(this.urlKey);
+    return this.storageApi.get(this.currentViewKey).url;
+};
+
+/**
+ * This method gets the number of views on the view stack;
+ * @returns {Number|number|c.length|*|length}
+ */
+ViewModel.prototype.getViewStackSize = function(){
+    var viewStack = this.storageApi.get(this.viewStackKey);
+    return (viewStack && viewStack != null) ? viewStack.length : 0;
 };
 
 /**
@@ -118,10 +127,58 @@ ViewModel.prototype.getCurrentPageUrl = function(){
  * @param url
  * @param title
  */
-ViewModel.prototype.setLastRequestedView = function (url, title){
+ViewModel.prototype.showView = function (url, title){
     if(url && title){
-        this.storageApi.set(this.urlKey, url);
-        this.storageApi.set(this.titleKey, title);
+        var currentView = {
+                "url": url,
+                "title": title
+            };
+
+        this.storageApi.set(this.currentViewKey, currentView);
         this.eventHub.trigger(this.eventHub.events.updatedContent);
     }
 };
+
+/**
+ * This method sets the url and title of the currently requested page.
+ * @param url
+ * @param title
+ */
+ViewModel.prototype.pushView = function (url, title){
+    if(url && title){
+        var previousView = {
+            "url": this.getCurrentPageUrl(),
+            "title": this.getCurrentPageTitle()
+            },
+
+            currentView = {
+                "url": url,
+                "title": title
+            };
+
+        //add the view to the view stack
+        var viewStack = this.storageApi.get(this.viewStackKey);
+        viewStack = viewStack ? viewStack : [];
+        viewStack.push(previousView);
+        this.storageApi.set(this.viewStackKey, viewStack);
+
+        this.storageApi.set(this.currentViewKey, currentView);
+        this.eventHub.trigger(this.eventHub.events.updatedContent);
+    }
+};
+
+/**
+ * This method pops the last previous view from the view stack and updates the model.
+ */
+ViewModel.prototype.popView = function(){
+    var viewStack = this.storageApi.get(this.viewStackKey),
+        previousView;
+
+    viewStack = viewStack ? viewStack : [];
+    previousView = viewStack.pop();
+    this.storageApi.set(this.currentViewKey, previousView);
+    this.storageApi.set(this.viewStackKey, viewStack);
+    this.eventHub.trigger(this.eventHub.events.updatedContent);
+};
+
+

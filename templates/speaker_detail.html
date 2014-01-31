@@ -4,15 +4,15 @@
             <h2 class='details-speaker-bio'>${name}</h2>
             <img src='${imgUrl}' title='${name}' alt='Bild von ${name}' class='speaker-image'/>
             {{if bio == ""}}
-            <p>Keine Informationen vorhanden </p>
+                <p>Keine Informationen vorhanden </p>
             {{else}}
-            {{if bio.indexOf("ul") >= 0|| bio.indexOf("ol") >= 0}}
-            <div id="bio-list" class="speaker-bio">
-            {{html bio}}
-            </div>
-            {{else}}
-            <p>${bio} </p>
-            {{/if}}
+                {{if bio.indexOf("ul") >= 0|| bio.indexOf("ol") >= 0}}
+                    <div id="bio-list" class="speaker-bio">
+                        {{html bio}}
+                    </div>
+                {{else}}
+                    <p>${bio} </p>
+                {{/if}}
             {{/if}}
         </div>
     </div>

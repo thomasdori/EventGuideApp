@@ -3,8 +3,6 @@
  * @constructor
  */
 function IndexViewModifier() {
-//    this.barsIconClass = 'ui-icon-bars';
-//    this.arrowIconClass = 'ui-icon-arrow-l';
     this.viewModel = new ViewModel();
     this.eventHub = new EventHub();
 }
@@ -28,7 +26,7 @@ IndexViewModifier.prototype.startListening = function(){
 IndexViewModifier.prototype.showAppView = function () {
     $('#frmLogin').hide();
     $('#appContent').show();
-    $('#iconbutton').show();
+    $('#menu-button').show();
 
     this.updateMenu();
 };
@@ -40,7 +38,7 @@ IndexViewModifier.prototype.showLoginView = function () {
     $('#pageTitle').html('');
     $('#nav-panel').panel('close');
     $('#appContent').hide();
-    $('#iconbutton').hide();
+    $('#menu-button').hide();
     $('#frmLogin').show();
     $('#txtEmail').val('').focus();
 };
@@ -49,10 +47,10 @@ IndexViewModifier.prototype.showLoginView = function () {
  * This method creates the menu DOM from the given JSON data
  */
 IndexViewModifier.prototype.updateMenu = function(){
-    var templateContent = this.viewModel.getMenu();
+    var data = this.viewModel.getMenu();
 
-    if (templateContent){
-        this.loadAndApplyTemplate('menu', templateContent, '.nav-search');
+    if (data){
+        this.loadAndApplyTemplate(data.templateFileName, data, '.nav-search');
     }
 };
 
@@ -63,8 +61,18 @@ IndexViewModifier.prototype.updateContent = function(){
     var data = this.viewModel.getContent();
 
     if(data){
+        //display the correct icon
+        if(this.viewModel.getViewStackSize() > 0){
+            $('#menu-button').hide();
+            $('#back-button').show();
+        } else {
+            $('#back-button').hide();
+            $('#menu-button').show();
+        }
+
+        //set the page title and content
         $('#pageTitle').html(this.viewModel.getCurrentPageTitle());
-        this.loadAndApplyTemplate(data.template, data.content, '#appContent');
+        this.loadAndApplyTemplate(data.templateFileName, data.content, '#appContent');
 
         // close the menu so the main content is visible
         $('#nav-panel').panel('close');
@@ -115,9 +123,8 @@ IndexViewModifier.prototype.loadAndApplyTemplate = function(templateName, templa
             $(templateContainer).empty();
             $.tmpl(templateStructure, templateContent).appendTo(templateContainer);
 
-            //just in case we loaded a list view
+            //just in case we loaded a list view or menu
             $('[data-role="listview"]').listview();
-            $('#session-list').listview().listview('refresh');
             $('.nav-search').listview('refresh');
     });
 };

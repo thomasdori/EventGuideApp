@@ -15,7 +15,8 @@
 
 				<div id="nav-bar" data-role="header" data-position="fixed">
 					<span id="pageTitle"></span><img id="logo" src="img/ega_logo_white.png">
-					<a href="#nav-panel" data-role="button" data-icon="bars" data-iconpos="notext" id="iconbutton">Menu</a>
+					<a href="#nav-panel" data-role="button" data-icon="bars" data-iconpos="notext" class="ui-btn-left" id="menu-button">Menu</a>
+                    <a href="#" data-role="button" data-icon="arrow-l" data-iconpos="notext" class="ui-btn-left" id="back-button">Back</a>
 				</div>
 
 				<div id="content_container" data-role="content">
@@ -27,7 +28,9 @@
 							<label id="lblEmail" for="txtEmail">E-Mail Adresse:</label>
 							<input id="txtEmail" type="email" name="email" data-clear-btn="true" placeholder="E-Mail Adresse">
 							<input id="btnLogin" type="submit" value="Login" data-theme="b">
-						</form><div id="appContent"></div>
+						</form>
+
+                        <div id="appContent"></div>
 					</div>
 				</div>
 

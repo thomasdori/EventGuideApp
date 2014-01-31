@@ -15,8 +15,11 @@ IndexActionHandler.prototype.viewDidLoad = function () {
     $('body')
         .on('click', '#message-close-button', this.closePopupHandler.bind(this))
         .on('submit', '#frmLogin', this.loginHandler.bind(this))
-        .on('click', 'a.menu-item:not(#logout)', this.menuItemClickHandler.bind(this))
-        .on('click', 'a.menu-item#logout', this.logoutHandler.bind(this));
+        .on('click', '#back-button', this.backButtonHandler.bind(this))
+        .on('click', 'a.menu-item#logout', this.logoutHandler.bind(this))
+        .on('click', 'a.menu-item:not(#logout)', this.itemClickHandler.bind(this))
+        .on('click', 'a.speaker-item', this.detailItemClickHandler.bind(this))
+        .on('click', 'a.list-view-item', this.detailItemClickHandler.bind(this));
 
     // Apache Cordova initialization
     $(document).bind('mobileinit', function () {
@@ -57,12 +60,30 @@ IndexActionHandler.prototype.logoutHandler = function () {
 };
 
 /**
- * This method gets called when a menu item was clicked
+ * This method gets called when a menu item, speaker link or list item was clicked.
  */
-IndexActionHandler.prototype.menuItemClickHandler = function (event) {
-    var menuItem = $(event.currentTarget);
-    this.viewModel.setLastRequestedView(menuItem.attr('href'), menuItem.attr('title'));
+IndexActionHandler.prototype.itemClickHandler = function (event) {
+    var item = $(event.currentTarget);
+    this.viewModel.showView(item.attr('href'), item.attr('title'));
 
     return false;
 };
 
+/**
+ * This method gets called when a menu item, speaker link or list item was clicked.
+ */
+IndexActionHandler.prototype.detailItemClickHandler = function (event) {
+    var item = $(event.currentTarget);
+    this.viewModel.pushView(item.attr('href'), item.attr('title'));
+
+    return false;
+};
+
+/**
+ * This method gets called when a menu item, speaker link or list item was clicked.
+ */
+IndexActionHandler.prototype.backButtonHandler = function (event) {
+    this.viewModel.popView();
+
+    return false;
+};

@@ -5578,9 +5578,10 @@ h2.details-speaker-bio {
 }
 #appContent,
 #frmLogin,
-#iconbutton,
+#menu-button,
 #popup-dialog,
-#confirm-dialog {
+#confirm-dialog,
+#back-button {
   display: none;
 }
 .cat-header0 {

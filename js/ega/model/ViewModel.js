@@ -14,6 +14,7 @@ function ViewModel() {
     this.eventHub.subscribe(this.eventHub.events.receivedMessage, this.setMessage.bind(this));
     this.eventHub.subscribe(this.eventHub.events.receivedContentData, this.setContent.bind(this));
     this.eventHub.subscribe(this.eventHub.events.receivedMenuData, this.setMenu.bind(this));
+    this.eventHub.subscribe(this.eventHub.events.receivedLogoutData, this.loggedOut.bind(this));
 }
 
 /**
@@ -197,4 +198,11 @@ ViewModel.prototype.setComment = function(userId, sessionId, comment){
  */
 ViewModel.prototype.setPollVote = function(userId, pollId, data){
     this.serverApi.sendPollVote(userId, pollId, data);
+};
+
+/**
+ * This method displays a success message after a successful logout
+ */
+ViewModel.prototype.loggedOut = function(){
+    this.setMessage({}, 'Sie wurden erfolgreich ausgeloggt.');
 };

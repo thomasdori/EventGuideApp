@@ -83,17 +83,17 @@ IndexViewModifier.prototype.updateContent = function(){
  * This method shows a message with a given title.
  */
 IndexViewModifier.prototype.updateMessage = function () {
-    var message = this.viewModel.getMessage(),
-        popupElement = $('#popup-message');
+    var message = this.viewModel.getMessage();
 
-    if(message && message !== ''){
-        $('#message-title').html('Event Guide App');
-        $('#message-content').html(message);
-
-        popupElement.popup();
-        popupElement.popup("open");
+    if(navigator.notification.alert){
+        navigator.notification.alert(
+            message,                // message
+            function(){},           // callback
+            'EGA',                  // title
+            'OK'                  // buttonName
+        );
     } else {
-        popupElement.popup("close");
+        window.alert(message);
     }
 };
 

@@ -16,7 +16,6 @@ IndexActionHandler.prototype.viewDidLoad = function () {
         .on('submit', '#frmLogin', this.loginHandler.bind(this))
         .on('submit', '#frmComment', this.commentHandler.bind(this))
         .on('submit', '#frmPoll', this.pollHandler.bind(this))
-        .on('click', '#message-close-button', this.closePopupHandler.bind(this))
         .on('click', '#back-button', this.backButtonHandler.bind(this))
         .on('click', 'a.menu-item#logout', this.logoutHandler.bind(this))
         .on('click', 'a.menu-item:not(#logout)', this.itemClickHandler.bind(this))
@@ -28,13 +27,6 @@ IndexActionHandler.prototype.viewDidLoad = function () {
         $.mobile.allowCrossDomainPages = true;
         $.mobile.buttonMarkup.hoverDelay = 0;
     });
-};
-
-/**
- * This method gets called when the OK-button in the popup was clicked
- */
-IndexActionHandler.prototype.closePopupHandler = function (){
-    this.viewModel.removeMessage();
 };
 
 /**

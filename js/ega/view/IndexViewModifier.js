@@ -1,5 +1,5 @@
 /**
- * This class encapsulates all methods that modify the view in index.html
+ * This class encapsulates all methods that modify the index.html view
  * @constructor
  */
 function IndexViewModifier() {
@@ -10,7 +10,7 @@ function IndexViewModifier() {
 /**
  * This method binds the functions to the custom events
  */
-IndexViewModifier.prototype.startListening = function(){
+IndexViewModifier.prototype.startListening = function () {
     this.eventHub.subscribe(this.eventHub.events.requestInitiated, this.showLoadingAnimation.bind(this));
     this.eventHub.subscribe(this.eventHub.events.requestDone, this.hideLoadingAnimation.bind(this));
     this.eventHub.subscribe(this.eventHub.events.updatedMenu, this.updateMenu.bind(this));
@@ -21,7 +21,7 @@ IndexViewModifier.prototype.startListening = function(){
 };
 
 /**
- * Hide the login form and show the app content.
+ * This method hides the login form and shows the app content.
  */
 IndexViewModifier.prototype.showAppView = function () {
     $('#frmLogin').hide();
@@ -32,7 +32,7 @@ IndexViewModifier.prototype.showAppView = function () {
 };
 
 /**
- * Hide the app content form and show the login form.
+ * This method hides the app content and shows the login form.
  */
 IndexViewModifier.prototype.showLoginView = function () {
     $('#pageTitle').html('');
@@ -46,23 +46,23 @@ IndexViewModifier.prototype.showLoginView = function () {
 /**
  * This method creates the menu DOM from the given JSON data
  */
-IndexViewModifier.prototype.updateMenu = function(){
+IndexViewModifier.prototype.updateMenu = function () {
     var data = this.viewModel.getMenu();
 
-    if (data){
+    if (data) {
         this.loadAndApplyTemplate(data.templateFileName, data, '.nav-search');
     }
 };
 
 /**
- *
+ * This method updates the main content area.
  */
-IndexViewModifier.prototype.updateContent = function(){
+IndexViewModifier.prototype.updateContent = function () {
     var data = this.viewModel.getContent();
 
-    if(data){
+    if (data) {
         //display the correct icon
-        if(this.viewModel.getViewStackSize() > 0){
+        if (this.viewModel.getViewStackSize() > 0) {
             $('#menu-button').hide();
             $('#back-button').show();
         } else {
@@ -85,12 +85,13 @@ IndexViewModifier.prototype.updateContent = function(){
 IndexViewModifier.prototype.updateMessage = function () {
     var message = this.viewModel.getMessage();
 
-    if(navigator.notification.alert){
+    //check if the cordova api is available
+    if (navigator.notification.alert) {
         navigator.notification.alert(
             message,                // message
-            function(){},           // callback
+            function () {},         // callback
             'EGA',                  // title
-            'OK'                  // buttonName
+            'OK'                    // buttonName
         );
     } else {
         window.alert(message);
@@ -101,12 +102,11 @@ IndexViewModifier.prototype.updateMessage = function () {
  * This method makes the loading animation visible.
  */
 IndexViewModifier.prototype.showLoadingAnimation = function () {
-    //showing an empty text is necessary so the spinning animation is darker
     $.mobile.loading('show', {textVisible: true, text: '', theme: 'b'});
 };
 
 /**
- * This method makes the loading animation invisible
+ * This method makes the loading animation invisible.
  */
 IndexViewModifier.prototype.hideLoadingAnimation = function () {
     $.mobile.loading('hide');
@@ -114,26 +114,17 @@ IndexViewModifier.prototype.hideLoadingAnimation = function () {
 
 /**
  * This method loads the template file via AJAX.
- * @param templateName
+ * @param templateFileName
  * @param templateContent
  * @param templateContainer
  */
-IndexViewModifier.prototype.loadAndApplyTemplate = function(templateName, templateContent, templateContainer) {
-    $.get(this.getTemplatePath(templateName), {},  function(templateStructure){
-            $(templateContainer).empty();
-            $.tmpl(templateStructure, templateContent).appendTo(templateContainer);
+IndexViewModifier.prototype.loadAndApplyTemplate = function (templateFileName, templateContent, templateContainer) {
+    $.get('templates/' + templateFileName + '.html', {}, function (templateStructure) {
+        $(templateContainer).empty();
+        $.tmpl(templateStructure, templateContent).appendTo(templateContainer);
 
-            //just in case we loaded a list view or menu
-            $('[data-role="listview"]').listview();
-            $('.nav-search').listview('refresh');
+        //just in case we loaded a list view or menu
+        $('[data-role="listview"]').listview();
+        $('.nav-search').listview('refresh');
     });
-};
-
-/**
- * This method creates the path to a given template
- * @param templateFileName
- * @returns {string}
- */
-IndexViewModifier.prototype.getTemplatePath = function(templateFileName){
-    return 'templates/' + templateFileName + '.html';
 };

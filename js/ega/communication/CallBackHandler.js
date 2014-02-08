@@ -2,26 +2,26 @@
  * This class contains all the methods that handle server callbacks.
  * @constructor
  */
-function CallBackHandler(){
+function CallBackHandler() {
     this.eventHub = new EventHub();
 }
 
 /**
  * This method gets called if a request failed.
  */
-CallBackHandler.prototype.requestFailed = function(){
+CallBackHandler.prototype.requestFailed = function () {
     this.eventHub.trigger(this.eventHub.events.receivedMessage, 'Es ist ein Fehler in der Kommunikation mit dem Server aufgetreten.');
 };
 
 /**
  * This method gets called after every request.
  */
-CallBackHandler.prototype.requestDone = function(){
-    this.eventHub.trigger(this.eventHub.events.requestDone);
+CallBackHandler.prototype.requestDone = function () {
+    this.eventHub.trigger(this.eventHub.events.requestDone, {});
 };
 
 /**
- * Handles login callback.
+ * This method handles login callback.
  * @param data - The data returned form the server.
  */
 CallBackHandler.prototype.loginCallback = function (data) {
@@ -29,7 +29,7 @@ CallBackHandler.prototype.loginCallback = function (data) {
 };
 
 /**
- * Handles logout callback.
+ * This method handles logout callback.
  * @param data - The data returned form the server.
  */
 CallBackHandler.prototype.logoutCallback = function (data) {
@@ -37,7 +37,7 @@ CallBackHandler.prototype.logoutCallback = function (data) {
 };
 
 /**
- * This message handles the callback for the menu request.
+ * This method handles the callback for the menu request.
  * @param data
  */
 CallBackHandler.prototype.menuCallback = function (data) {
@@ -45,7 +45,7 @@ CallBackHandler.prototype.menuCallback = function (data) {
 };
 
 /**
- * This message handles the callback for the content request.
+ * This method handles the callback for the content request.
  * @param data
  */
 CallBackHandler.prototype.contentCallback = function (data) {
@@ -53,16 +53,16 @@ CallBackHandler.prototype.contentCallback = function (data) {
 };
 
 /**
- * This message handles the submission callback for feedback and poll requests.
+ * This method handles the submission callback for feedback and poll requests.
  * @param data
  */
-CallBackHandler.prototype.submissionCallbackHandler = function(data){
-    var message = (data.error) ? 'Bein Senden der Inhalte trat ein Fehler auf.' : 'Ihr Feedback wurde erfolgreich übermittelt.'
+CallBackHandler.prototype.submissionCallbackHandler = function (data) {
+    var message = (data.error) ? 'Bein Senden der Inhalte trat ein Fehler auf.' : 'Ihr Feedback wurde erfolgreich übermittelt.';
     this.eventHub.trigger(this.eventHub.events.receivedMessage, message);
 };
 
 /**
- * This message validates the data returned from the server and check if it contains an error message.
+ * This method validates the data returned from the server and check if it contains an error message.
  * @param data
  * @param successCallbackEventName
  * @param errorMessage

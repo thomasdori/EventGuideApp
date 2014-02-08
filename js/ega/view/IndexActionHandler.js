@@ -1,5 +1,5 @@
 /**
- * This class contains all the actions (incl. bindings) triggered by view events and custom events.
+ * This class contains all the actions (incl. bindings) triggered by view events.
  * @constructor
  */
 function IndexActionHandler() {
@@ -8,7 +8,7 @@ function IndexActionHandler() {
 }
 
 /**
- * Do all the binding, showing and hiding.
+ * Do all the bindings and initializations.
  */
 IndexActionHandler.prototype.viewDidLoad = function () {
     // Action bindings for UI element events
@@ -35,10 +35,10 @@ IndexActionHandler.prototype.viewDidLoad = function () {
 IndexActionHandler.prototype.loginHandler = function () {
     var email = $('#txtEmail').val();
 
-    if(email !== ''){
+    if (email !== '') {
         this.userModel.login(email);
     } else {
-        this.viewModel.setMessage('Bitte füllen Sie das E-Mail-Feld aus.')
+        this.viewModel.setMessage({}, 'Bitte füllen Sie das E-Mail-Feld aus.');
     }
 
     return false;
@@ -54,7 +54,7 @@ IndexActionHandler.prototype.logoutHandler = function () {
 };
 
 /**
- * This method gets called when a menu item, speaker link or list item was clicked.
+ * This method gets called when a menu item was clicked.
  */
 IndexActionHandler.prototype.itemClickHandler = function (event) {
     var item = $(event.currentTarget);
@@ -64,7 +64,7 @@ IndexActionHandler.prototype.itemClickHandler = function (event) {
 };
 
 /**
- * This method gets called when a menu item, speaker link or list item was clicked.
+ * This method gets called when a speaker link or list item was clicked.
  */
 IndexActionHandler.prototype.detailItemClickHandler = function (event) {
     var item = $(event.currentTarget);
@@ -74,7 +74,7 @@ IndexActionHandler.prototype.detailItemClickHandler = function (event) {
 };
 
 /**
- * This method gets called when a menu item, speaker link or list item was clicked.
+ * This method gets called when the back button was clicked.
  */
 IndexActionHandler.prototype.backButtonHandler = function () {
     this.viewModel.popView();
@@ -85,7 +85,7 @@ IndexActionHandler.prototype.backButtonHandler = function () {
 /**
  * This method handles the submission of comments.
  */
-IndexActionHandler.prototype.commentHandler = function (event){
+IndexActionHandler.prototype.commentHandler = function (event) {
     var form = $(event.target);
     this.viewModel.setComment(this.userModel.getUser(), form.find('#session_id').val(), form.find('#comment').val());
 
@@ -95,7 +95,7 @@ IndexActionHandler.prototype.commentHandler = function (event){
 /**
  * This method handles the submission of polls.
  */
-IndexActionHandler.prototype.pollHandler = function (event){
+IndexActionHandler.prototype.pollHandler = function (event) {
     var form = $(event.target),
         pollId = form.find('#poll-id').val(),
         selectedValue = $("input[type='radio'][name='poll-" + pollId + "']:checked").val();

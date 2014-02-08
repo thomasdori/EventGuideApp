@@ -2,7 +2,8 @@
  * This class is in response of handling the storage. Either session- or cookie storage.
  * @constructor
  */
-function StorageWrapper() {}
+function StorageWrapper() {
+}
 
 /**
  * This property is either the sessionStorage or a cookie storage.

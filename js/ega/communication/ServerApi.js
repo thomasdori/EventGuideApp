@@ -8,7 +8,7 @@ function ServerApi() {
 }
 
 /**
- * This is the only method that does an jquery ajax request.
+ * This is the only method that does a jquery ajax request to a remote resource.
  * @param method
  * @param data
  * @param callback
@@ -16,7 +16,7 @@ function ServerApi() {
 ServerApi.prototype.getJSON = function (method, data, callback) {
     var url = 'http://localhost/EventGuideService/api/' + method + '/';
 
-    this.eventHub.trigger(this.eventHub.events.requestInitiated);
+    this.eventHub.trigger(this.eventHub.events.requestInitiated, {});
     $.support.cors = true;
 
     $.getJSON(url, data, callback)
@@ -25,7 +25,7 @@ ServerApi.prototype.getJSON = function (method, data, callback) {
 };
 
 /**
- * This method is used to get default content provided by the backend.
+ * This method is used to get content provided by the backend.
  * @param url
  */
 ServerApi.prototype.getContent = function (url) {
@@ -33,7 +33,7 @@ ServerApi.prototype.getContent = function (url) {
 };
 
 /**
- * This method request the menu.
+ * This method prepares and sends a menu request to the server.
  */
 ServerApi.prototype.getMenu = function () {
     this.getJSON('menus/get_menu', {}, this.callBackHandler.menuCallback.bind(this.callBackHandler));
@@ -55,23 +55,23 @@ ServerApi.prototype.logout = function () {
 };
 
 /**
- * This methods sends the comment for a session.
- * @userId userId
+ * This methods sends the comment for a session to the server.
+ * @param userId
  * @param sessionId
  * @param comment
  */
-ServerApi.prototype.sendComment = function(userId, sessionId, comment){
+ServerApi.prototype.sendComment = function (userId, sessionId, comment) {
     var data = {'user_id': userId, 'session_id': sessionId, 'comment': comment};
     this.getJSON('respond.submit_comment', data, this.callBackHandler.submissionCallbackHandler.bind(this.callBackHandler));
 };
 
 /**
  * This methods sends the poll vote for a session.
- * @userId userId
- * @param sessionId
- * @param comment
+ * @param userId
+ * @param pollId
+ * @param selectedValue
  */
-ServerApi.prototype.sendPollVote = function(userId, pollId, selectedValue){
+ServerApi.prototype.sendPollVote = function (userId, pollId, selectedValue) {
     var data = {'user_id': userId, 'poll_id': pollId, 'selectedValue': selectedValue};
     this.getJSON('polls.vote_poll', data, this.callBackHandler.submissionCallbackHandler.bind(this.callBackHandler));
 };

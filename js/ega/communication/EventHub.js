@@ -2,8 +2,7 @@
  * This class wraps the event handling and contains all the event names.
  * @constructor
  */
-function EventHub() {
-}
+function EventHub() {}
 
 /**
  * This object contains all the event names used in the application.

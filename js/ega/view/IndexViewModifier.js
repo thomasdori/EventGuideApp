@@ -46,8 +46,10 @@ IndexViewModifier.prototype.showLoginView = function () {
 /**
  * This method creates the menu DOM from the given JSON data
  */
-IndexViewModifier.prototype.updateMenu = function () {
-    var data = this.viewModel.getMenu();
+IndexViewModifier.prototype.updateMenu = function (event, data) {
+    if(!data){
+        data = this.viewModel.getMenu();
+    }
 
     if (data) {
         this.loadAndApplyTemplate(data.templateFileName, data, '.nav-search');
@@ -57,8 +59,10 @@ IndexViewModifier.prototype.updateMenu = function () {
 /**
  * This method updates the main content area.
  */
-IndexViewModifier.prototype.updateContent = function () {
-    var data = this.viewModel.getContent();
+IndexViewModifier.prototype.updateContent = function (event, data) {
+    if(!data){
+        data = this.viewModel.getContent();
+    }
 
     if (data) {
         //display the correct icon

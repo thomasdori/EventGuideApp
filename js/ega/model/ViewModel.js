@@ -23,8 +23,13 @@ function ViewModel() {
  * @param menu
  */
 ViewModel.prototype.setMenu = function (event, menu) {
-    this.storageWrapper.set(this.menuKey, menu);
-    this.eventHub.trigger(this.eventHub.events.updatedMenu, {});
+    var localMenu = this.storageWrapper.get(this.menuKey);
+
+    // check if the menu was updated
+    if(JSON.stringify(menu) !== JSON.stringify(localMenu)){
+        this.storageWrapper.set(this.menuKey, menu);
+        this.eventHub.trigger(this.eventHub.events.updatedMenu, menu);
+    }
 };
 
 /**
@@ -34,8 +39,8 @@ ViewModel.prototype.setMenu = function (event, menu) {
 ViewModel.prototype.getMenu = function () {
     var returnValue = this.storageWrapper.get(this.menuKey);
 
-    if (!returnValue || returnValue === null)
-        this.serverApi.getMenu();
+    // send a request anyway, maybe an update is available
+    this.serverApi.getMenu();
 
     return returnValue;
 };
@@ -49,8 +54,13 @@ ViewModel.prototype.setContent = function (event, content) {
     var url = this.getCurrentPageUrl();
 
     if (url && url !== null) {
-        this.storageWrapper.set(url, content);
-        this.eventHub.trigger(this.eventHub.events.updatedContent, {});
+        var localContent = this.storageWrapper.get(url);
+
+        // check if the content was updated
+        if(JSON.stringify(localContent) !== JSON.stringify(content)){
+            this.storageWrapper.set(url, content);
+            this.eventHub.trigger(this.eventHub.events.updatedContent, content);
+        }
     }
 };
 
@@ -65,8 +75,8 @@ ViewModel.prototype.getContent = function () {
     if (url && url !== null) {
         returnValue = this.storageWrapper.get(url);
 
-        if (!returnValue || returnValue === null)
-            this.serverApi.getContent(url);
+        // send a request anyway, maybe an update is available
+        this.serverApi.getContent(url);
     }
 
     return returnValue;
@@ -128,7 +138,7 @@ ViewModel.prototype.showView = function (url, title) {
         };
 
         this.storageWrapper.set(this.currentViewKey, currentView);
-        this.eventHub.trigger(this.eventHub.events.updatedContent, {});
+        this.eventHub.trigger(this.eventHub.events.updatedContent, undefined);
     }
 };
 
@@ -156,7 +166,7 @@ ViewModel.prototype.pushView = function (url, title) {
         this.storageWrapper.set(this.viewStackKey, viewStack);
 
         this.storageWrapper.set(this.currentViewKey, currentView);
-        this.eventHub.trigger(this.eventHub.events.updatedContent, {});
+        this.eventHub.trigger(this.eventHub.events.updatedContent, undefined);
     }
 };
 
@@ -171,7 +181,7 @@ ViewModel.prototype.popView = function () {
     previousView = viewStack.pop();
     this.storageWrapper.set(this.currentViewKey, previousView);
     this.storageWrapper.set(this.viewStackKey, viewStack);
-    this.eventHub.trigger(this.eventHub.events.updatedContent, {});
+    this.eventHub.trigger(this.eventHub.events.updatedContent, undefined);
 };
 
 /**

@@ -97,7 +97,10 @@ ViewModel.prototype.setMessage = function (event, message) {
  * @returns {*}
  */
 ViewModel.prototype.getMessage = function () {
-    return this.storageWrapper.get(this.messageKey);
+    var returnValue = this.storageWrapper.get(this.messageKey);
+    this.storeWrapper.remove(this.messageKey);
+
+    return returnValue;
 };
 
 /**

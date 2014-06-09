@@ -90,7 +90,7 @@ IndexViewModifier.prototype.updateMessage = function () {
     var message = this.viewModel.getMessage();
 
     //check if the cordova api is available
-    if (navigator.notification.alert) {
+    if (navigator.notification && navigator.notification.alert) {
         navigator.notification.alert(
             message,                // message
             function () {},         // callback
